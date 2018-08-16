@@ -11,9 +11,14 @@ import com.socks.library.KLog;
 import com.ums.upos.sdk.exception.CallServiceException;
 import com.ums.upos.sdk.exception.SdkException;
 import com.ums.upos.sdk.system.BaseSystemManager;
+import com.ums.upos.sdk.system.ModuleEnum;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Map;
+
 /**
  * Created by Luozhimin on 2018-06-22.13:01
  */
@@ -55,8 +60,8 @@ public class RepObj {
             }
             KLog.d("deviceInfo",deviceInfoMap);
             deviceInfoJSon.setDeviceSn("0820043480");//终端硬件序列号
-            jsonObject.put("deviceInfo",JSON.toJSONString(deviceInfoJSon));
-            KLog.json("deviceInfo",JSON.toJSONString(deviceInfoJSon));
+            jsonObject.put("deviceInfo", JSON.toJSONString(deviceInfoJSon));
+            KLog.json("deviceInfo", JSON.toJSONString(deviceInfoJSon));
 
 
         } catch (JSONException e) {
@@ -70,8 +75,8 @@ public class RepObj {
 
         return jsonObject;
     }
-    public static JSONObject netRespParameFast(Context context,String appId,ReqDetailJson reqDetailJson, int swichCount,BaseSystemManager baseSystemManager){
-        JSONObject  retuJSonObje=null;
+    public static JSONObject netRespParameFast(Context context, String appId, String appKey, ReqDetailJson reqDetailJson, int swichCount, BaseSystemManager baseSystemManager){
+        JSONObject retuJSonObje=null;
         com.alibaba.fastjson.JSONObject jsonObject = null;
         ////请求参数
      /*   ReqDetailJson reqDetailJson=new ReqDetailJson();
@@ -96,29 +101,42 @@ public class RepObj {
 */
        ////应用信息
         ReqApiParam.AppInfoBean appInfoJSon = new ReqApiParam.AppInfoBean();
-        appInfoJSon.setAppName("E核销");
+
         appInfoJSon.setAppId(appId);//"afd2baf088034179b4c98826b4d9fcca"
         String appPackname= Utills.getAppProcessName(context);//获取包名
+        int maoIndex=appPackname.indexOf(":");
+        appPackname= appPackname.substring(0,maoIndex);//去除带进程名的：proos
         String appName=Utills.getAppName(context);//获取应用名
+        appInfoJSon.setAppName(appName);
         String versionCode=Utills.getVersionName(context);//获取版本名
-        appInfoJSon.setAppPackName("com.ums.ecard");
-        appInfoJSon.setAppVersionCode("1.0.15");
+        appInfoJSon.setAppPackName(appPackname);
+        appInfoJSon.setAppVersionCode(versionCode);
        ////设备信息
         ReqApiParam.DeviceInfoBean deviceInfoJSon = new ReqApiParam.DeviceInfoBean();
         deviceInfoJSon.setProdCode("19");//产品型号
-        deviceInfoJSon.setFirmCode("LANDI APOS A8");//厂商代码
-          //获取sn
-        String deviceInfoMap  = null;
+
+        String deviceInfoMap =null;  //获取sn
+        String deviceFirmCode=null;  //获取model
+        Map<ModuleEnum,String> deviceInfo=null;
         try {
-            deviceInfoMap = baseSystemManager.readSN();
-              deviceInfoMap=baseSystemManager.getDeviceInfo().toString();
+//            deviceInfoMap = baseSystemManager.readSN().toString();
+             deviceInfo =baseSystemManager.getDeviceInfo();
+             //{model=APOS A8, is_support_script_print=1, sn=000001041743CA880954, is_common_sig=1, vendor=landi, is_support_wifiprobe=1, service_ver=1.0.27, is_support_rf_speedup=1, os_ver=5.0.7, is_support_scan_optimize=1, sdk_ver=2.0.1, is_support_chn_crypt_alg=1}
+            deviceInfoMap=deviceInfo.get(ModuleEnum.SN);
+            deviceFirmCode=deviceInfo.get(ModuleEnum.MODEL);
+            KLog.d("REp",deviceInfoMap);
         } catch (SdkException e) {
             e.printStackTrace();
+            KLog.d("REp","SdkException");
         } catch (CallServiceException e) {
             e.printStackTrace();
+            KLog.d("REp","CallServiceException");
         }catch (NullPointerException e){
+            KLog.d("REp","NullPointerException");
+
         }
-        deviceInfoJSon.setDeviceSn("50630309");//终端硬件序列号
+        deviceInfoJSon.setDeviceSn(deviceInfoMap);//终端硬件序列号
+        deviceInfoJSon.setFirmCode(deviceFirmCode);//厂商代码
 
      /*   ReqApiParam  reqApiParam=new ReqApiParam();
         reqApiParam.setReqDetail(JSON.toJSONString(reqDetailJson));//请求参数
@@ -132,17 +150,17 @@ public class RepObj {
 
         jsonObject=new com.alibaba.fastjson.JSONObject();
 
-            jsonObject.put("reqDetail",JSON.toJSONString(reqDetailJson));
-            jsonObject.put("appInfo",JSON.toJSONString(appInfoJSon));
+            jsonObject.put("reqDetail", JSON.toJSONString(reqDetailJson));
+            jsonObject.put("appInfo", JSON.toJSONString(appInfoJSon));
             jsonObject.put("interType","BMP-QUERY");
             jsonObject.put("version","001");
-            jsonObject.put("deviceInfo",JSON.toJSONString(deviceInfoJSon));
+            jsonObject.put("deviceInfo", JSON.toJSONString(deviceInfoJSon));
 
 
 //            String allStr =  com.alibaba.fastjson.JSONObject.toJSONString(jsonObject, SerializerFeature.PrettyFormat);
             String allStr= jsonObject.toString();
             KLog.d("REp",allStr);
-            String textTwo =AesUtil.encrypt(allStr,"d12fa7e992fa4ef3");
+            String textTwo =AesUtil.encrypt(allStr,appKey.substring(0,16));
             jsonObject.put("mac",textTwo);
 
 

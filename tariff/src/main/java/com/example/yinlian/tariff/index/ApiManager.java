@@ -51,6 +51,15 @@ public class ApiManager {
             e.printStackTrace();
         }
     }
+    public void deviceServiceLogout(){
+        try {
+            if(baseSystemManager!=null){
+                baseSystemManager.deviceServiceLogout();
+            }
+        } catch (SdkException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static synchronized ApiManager getInstance(Context context) {
         if (apiManager == null) {
@@ -67,11 +76,13 @@ public class ApiManager {
     RespCallBack respCallBack;
     RespErrorCallBack respErrorCallBack;
     private String appId;
+    private String appKey;
     private ReqDetailJson reqDetailJson;
-    public void getTariffInfo(String appId, ReqDetailJson reqDetailJson, RespCallBack respCallBack, RespErrorCallBack respErrorCallBack){
+    public void getTariffInfo(String appId, String appKey, ReqDetailJson reqDetailJson, RespCallBack respCallBack, RespErrorCallBack respErrorCallBack){
         this.respCallBack=respCallBack;
         this.respErrorCallBack=respErrorCallBack;
         this.appId=appId;
+        this.appKey=appKey;
         this.reqDetailJson=reqDetailJson;
         Message message=new Message();
         message.arg1=0;
@@ -80,10 +91,11 @@ public class ApiManager {
         handler.sendMessage(message);
 
     }
-    public void getForTrial(String appId, ReqDetailJson reqDetailJson, RespCallBack respCallBack, RespErrorCallBack respErrorCallBack){
+    public void getForTrial(String appId , String appKey, ReqDetailJson reqDetailJson, RespCallBack respCallBack, RespErrorCallBack respErrorCallBack){
         this.respCallBack=respCallBack;
         this.respErrorCallBack=respErrorCallBack;
         this.appId=appId;
+        this.appKey=appKey;
         this.reqDetailJson=reqDetailJson;
         Message message=new Message();
         message.arg1=1;
@@ -92,10 +104,11 @@ public class ApiManager {
         handler.sendMessage(message);
 
     }
-    public void getRecordPaymentInfo ( String appId, ReqDetailJson reqDetailJson,RespCallBack respCallBack, RespErrorCallBack respErrorCallBack){
+    public void getRecordPaymentInfo (String appId, String appKey, ReqDetailJson reqDetailJson, RespCallBack respCallBack, RespErrorCallBack respErrorCallBack){
         this.respCallBack=respCallBack;
         this.respErrorCallBack=respErrorCallBack;
         this.appId=appId;
+        this.appKey=appKey;
         this.reqDetailJson=reqDetailJson;
         Message message=new Message();
         message.arg1=2;
@@ -104,10 +117,11 @@ public class ApiManager {
         handler.sendMessage(message);
 
     }
-    public void getOrderInfo(String appId, ReqDetailJson reqDetailJson, RespCallBack respCallBack, RespErrorCallBack respErrorCallBack){
+    public void getOrderInfo(String appId , String appKey, ReqDetailJson reqDetailJson, RespCallBack respCallBack, RespErrorCallBack respErrorCallBack){
         this.respCallBack=respCallBack;
         this.respErrorCallBack=respErrorCallBack;
         this.appId=appId;
+        this.appKey=appKey;
         this.reqDetailJson=reqDetailJson;
         Message message=new Message();
         message.arg1=3;
@@ -123,8 +137,8 @@ public class ApiManager {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
-                    JSONObject jsonObjectParam=RepObj.netRespParameFast(context,appId,reqDetailJson,msg.arg1,baseSystemManager);
-                    String  dd =jsonObjectParam.toString();
+                    JSONObject jsonObjectParam=RepObj.netRespParameFast(context,appId,appKey,reqDetailJson,msg.arg1,baseSystemManager);
+                    String dd =jsonObjectParam.toString();
                     KLog.json(dd);
                     JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.POST, msg.obj.toString(), jsonObjectParam, new Response.Listener<JSONObject>() {
                         @Override

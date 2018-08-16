@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
          apiManager = ApiManager.getInstance(getApplicationContext());
         ReqDetailJson reqDetailJson = new ReqDetailJson();
         reqDetailJson.setTariffDescList("");
-        apiManager.getTariffInfo("4637b348589c493fbac91b6b5f0029f1", reqDetailJson, new ApiManager.RespCallBack() {
+        apiManager.getTariffInfo("4637b348589c493fbac91b6b5f0029f1","d12fa7e992fa4ef3", reqDetailJson, new ApiManager.RespCallBack() {
             @Override
             public void onResponse(String jsonRespString) {
                 try {
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 reqDetailJson.setPaymentPrice("60");
                 reqDetailJson.setPurchaseQuantity("1");
                 reqDetailJson.setPaymentTerm("半年");
-                apiManager.getRecordPaymentInfo("4637b348589c493fbac91b6b5f0029f1", reqDetailJson, new ApiManager.RespCallBack() {
+                apiManager.getRecordPaymentInfo("4637b348589c493fbac91b6b5f0029f1","d12fa7e992fa4ef3", reqDetailJson, new ApiManager.RespCallBack() {
                     @Override
                     public void onResponse(String jsonRespString) {
                          KLog.json(jsonRespString);
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.taocanThree:
                 ReqDetailJson reqDetailJsonTh = new ReqDetailJson();
                 reqDetailJsonTh.setTariffDescList("");
-                apiManager.getOrderInfo("4637b348589c493fbac91b6b5f0029f1", reqDetailJsonTh, new ApiManager.RespCallBack() {
+                apiManager.getOrderInfo("4637b348589c493fbac91b6b5f0029f1","d12fa7e992fa4ef3", reqDetailJsonTh, new ApiManager.RespCallBack() {
                     @Override
                     public void onResponse(String jsonRespString) {
                         KLog.json(jsonRespString);
