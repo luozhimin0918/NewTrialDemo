@@ -104,8 +104,11 @@ public class RepObj {
 
         appInfoJSon.setAppId(appId);//"afd2baf088034179b4c98826b4d9fcca"
         String appPackname= Utills.getAppProcessName(context);//获取包名
-        int maoIndex=appPackname.indexOf(":");
-        appPackname= appPackname.substring(0,maoIndex);//去除带进程名的：proos
+        if(appPackname.contains(":")){
+            int maoIndex=appPackname.indexOf(":");
+            appPackname= appPackname.substring(0,maoIndex);//去除带进程名的：proos
+        }
+
         String appName=Utills.getAppName(context);//获取应用名
         appInfoJSon.setAppName(appName);
         String versionCode=Utills.getVersionName(context);//获取版本名
