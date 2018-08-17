@@ -125,8 +125,8 @@ public class RepObj {
 //            deviceInfoMap = baseSystemManager.readSN().toString();
              deviceInfo =baseSystemManager.getDeviceInfo();
              //{model=APOS A8, is_support_script_print=1, sn=000001041743CA880954, is_common_sig=1, vendor=landi, is_support_wifiprobe=1, service_ver=1.0.27, is_support_rf_speedup=1, os_ver=5.0.7, is_support_scan_optimize=1, sdk_ver=2.0.1, is_support_chn_crypt_alg=1}
-            deviceInfoMap=deviceInfo.get(ModuleEnum.SN);
-            deviceFirmCode=deviceInfo.get(ModuleEnum.MODEL);
+            deviceInfoMap=android.os.Build.SERIAL;//sn
+            deviceFirmCode= android.os.Build.MODEL;// ：获取手机的型号 设备名称;
             KLog.d("REp",deviceInfoMap);
         } catch (SdkException e) {
             e.printStackTrace();
