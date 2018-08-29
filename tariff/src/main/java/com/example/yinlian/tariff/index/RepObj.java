@@ -23,6 +23,7 @@ import java.util.Map;
  * Created by Luozhimin on 2018-06-22.13:01
  */
 public class RepObj {
+   static String deviceInfoMap =null;  //获取sn
     public static JSONObject netRespParame(Context context, BaseSystemManager baseSystemManager){
         JSONObject jsonObject =new JSONObject();
         try {
@@ -118,14 +119,14 @@ public class RepObj {
         ReqApiParam.DeviceInfoBean deviceInfoJSon = new ReqApiParam.DeviceInfoBean();
         deviceInfoJSon.setProdCode("19");//产品型号
 
-        String deviceInfoMap =null;  //获取sn
+
         String deviceFirmCode=null;  //获取model
-        /*  Map<ModuleEnum,String> deviceInfo=null;
+         Map<ModuleEnum,String> deviceInfo=null;
       try {
 //            deviceInfoMap = baseSystemManager.readSN().toString();
              deviceInfo =baseSystemManager.getDeviceInfo();
              //{model=APOS A8, is_support_script_print=1, sn=000001041743CA880954, is_common_sig=1, vendor=landi, is_support_wifiprobe=1, service_ver=1.0.27, is_support_rf_speedup=1, os_ver=5.0.7, is_support_scan_optimize=1, sdk_ver=2.0.1, is_support_chn_crypt_alg=1}
-
+          deviceInfoMap=deviceInfo.get(ModuleEnum.SN);//sn
             KLog.d("REp",deviceInfoMap);
         } catch (SdkException e) {
             e.printStackTrace();
@@ -136,8 +137,8 @@ public class RepObj {
         }catch (NullPointerException e){
             KLog.d("REp","NullPointerException");
 
-        }*/
-        deviceInfoMap=android.os.Build.SERIAL;//sn
+        }
+
         deviceFirmCode= android.os.Build.MODEL;// ：获取手机的型号 设备名称;
 
         deviceInfoJSon.setDeviceSn(deviceInfoMap);//终端硬件序列号
