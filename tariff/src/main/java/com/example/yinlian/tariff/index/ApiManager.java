@@ -14,7 +14,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.yinlian.tariff.model.ReqDetailJson;
 import com.socks.library.KLog;
-
+import com.ums.upos.sdk.exception.SdkException;
+import com.ums.upos.sdk.system.BaseSystemManager;
+import com.ums.upos.sdk.system.OnServiceStatusListener;
 
 import org.json.JSONObject;
 
@@ -27,15 +29,37 @@ import java.util.Map;
 public class ApiManager {
     private static ApiManager apiManager;
     private static RequestQueue requestQueue;
+    private BaseSystemManager baseSystemManager;
     private Context context;
     //
     public ApiManager(Context context) {
         //创建一个请求队列
         requestQueue = Volley.newRequestQueue(context);
+        baseSystemManager = BaseSystemManager.getInstance();
         this.context=context;
+        try {
+            baseSystemManager.deviceServiceLogin(context, null, "99999999", new OnServiceStatusListener() {
+                @Override
+                public void onStatus(int i) {
 
+
+                    KLog.d("onStatus",""+i);
     }
+            });
 
+        } catch (SdkException e) {
+            e.printStackTrace();
+        }
+    }
+    public void deviceServiceLogout(){
+        try {
+            if(baseSystemManager!=null){
+                baseSystemManager.deviceServiceLogout();
+            }
+        } catch (SdkException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static synchronized ApiManager getInstance(Context context) {
         if (apiManager == null) {
@@ -113,7 +137,7 @@ public class ApiManager {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:
-                    JSONObject jsonObjectParam=RepObj.netRespParameFast(context,appId,appKey,reqDetailJson,msg.arg1);
+                    JSONObject jsonObjectParam=RepObj.netRespParameFast(context,appId,appKey,reqDetailJson,msg.arg1,baseSystemManager);
                     String dd =jsonObjectParam.toString();
                     KLog.json(dd);
                     JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.POST, msg.obj.toString(), jsonObjectParam, new Response.Listener<JSONObject>() {

@@ -8,7 +8,10 @@ import com.example.yinlian.tariff.model.DeviceInfoJSon;
 import com.example.yinlian.tariff.model.ReqApiParam;
 import com.example.yinlian.tariff.model.ReqDetailJson;
 import com.socks.library.KLog;
-
+import com.ums.upos.sdk.exception.CallServiceException;
+import com.ums.upos.sdk.exception.SdkException;
+import com.ums.upos.sdk.system.BaseSystemManager;
+import com.ums.upos.sdk.system.ModuleEnum;
 
 
 import org.json.JSONException;
@@ -20,7 +23,7 @@ import java.util.Map;
  * Created by Luozhimin on 2018-06-22.13:01
  */
 public class RepObj {
-    public static JSONObject netRespParame(Context context){
+    public static JSONObject netRespParame(Context context, BaseSystemManager baseSystemManager){
         JSONObject jsonObject =new JSONObject();
         try {
             ReqDetailJson reqDetailJson=new ReqDetailJson();
@@ -44,6 +47,18 @@ public class RepObj {
             deviceInfoJSon.setFirmCode("109");//厂商代码
 
             //获取sn
+           String deviceInfoMap  = null;
+            try {
+                deviceInfoMap = baseSystemManager.readSN();
+//                deviceInfoMap=baseSystemManager.getDeviceInfo().toString();
+            } catch (SdkException e) {
+                e.printStackTrace();
+            } catch (CallServiceException e) {
+                e.printStackTrace();
+            }catch (NullPointerException e){
+
+            }
+            KLog.d("deviceInfo",deviceInfoMap);
             deviceInfoJSon.setDeviceSn("0820043480");//终端硬件序列号
             jsonObject.put("deviceInfo", JSON.toJSONString(deviceInfoJSon));
             KLog.json("deviceInfo", JSON.toJSONString(deviceInfoJSon));
@@ -60,7 +75,7 @@ public class RepObj {
 
         return jsonObject;
     }
-    public static JSONObject netRespParameFast(Context context, String appId, String appKey, ReqDetailJson reqDetailJson, int swichCount){
+    public static JSONObject netRespParameFast(Context context, String appId, String appKey, ReqDetailJson reqDetailJson, int swichCount, BaseSystemManager baseSystemManager){
         JSONObject retuJSonObje=null;
         com.alibaba.fastjson.JSONObject jsonObject = null;
         ////请求参数

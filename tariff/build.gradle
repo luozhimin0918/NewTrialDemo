@@ -35,6 +35,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation files('libs/fastjson-1.1.40.jar')
+    implementation files('libs/sdk4upos_20180411_mix.jar')
     implementation 'com.github.zhaokaiqiang.klog:library:0.0.1'
 
 }
