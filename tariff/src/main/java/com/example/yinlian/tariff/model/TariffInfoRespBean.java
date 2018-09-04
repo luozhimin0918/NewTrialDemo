@@ -1,11 +1,12 @@
 package com.example.yinlian.tariff.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Luozhimin on 2018/8/2.16:55
  */
-public class TariffInfoRespBean {
+public class TariffInfoRespBean implements Serializable {
 
     /**
      * msg : 业务处理成功!
@@ -41,7 +42,7 @@ public class TariffInfoRespBean {
         this.state = state;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable {
         private List<TariffInfoListBean> tariffInfoList;
 
         public List<TariffInfoListBean> getTariffInfoList() {
@@ -52,7 +53,7 @@ public class TariffInfoRespBean {
             this.tariffInfoList = tariffInfoList;
         }
 
-        public static class TariffInfoListBean {
+        public static class TariffInfoListBean  implements Serializable{
             /**
              * tariffDesc : 一个月
              * tariffTag : 套餐一

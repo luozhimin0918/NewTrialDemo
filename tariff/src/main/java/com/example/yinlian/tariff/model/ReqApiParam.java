@@ -72,7 +72,7 @@ public class ReqApiParam implements Serializable {
         this.mac = mac;
     }
 
-    public static class AppInfoBean {
+    public static class AppInfoBean implements Serializable {
         /**
          * appName : 靓丽前台-银商版
          * appId : afd2baf088034179b4c98826b4d9fcca
@@ -118,7 +118,7 @@ public class ReqApiParam implements Serializable {
         }
     }
 
-    public static class DeviceInfoBean {
+    public static class DeviceInfoBean implements Serializable{
         /**
          * prodCode : 19
          * firmCode : 109
