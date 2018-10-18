@@ -37,19 +37,6 @@ public class ApiManager {
         requestQueue = Volley.newRequestQueue(context);
         baseSystemManager = BaseSystemManager.getInstance();
         this.context=context;
-        try {
-            baseSystemManager.deviceServiceLogin(context, null, "99999999", new OnServiceStatusListener() {
-                @Override
-                public void onStatus(int i) {
-
-
-                    KLog.d("onStatus",""+i);
-    }
-            });
-
-        } catch (SdkException e) {
-            e.printStackTrace();
-        }
     }
     public void deviceServiceLogout(){
         try {
@@ -84,11 +71,25 @@ public class ApiManager {
         this.appId=appId;
         this.appKey=appKey;
         this.reqDetailJson=reqDetailJson;
-        Message message=new Message();
+        final Message message=new Message();
         message.arg1=0;
         message.obj=UrUtil.findTariffInfoList;
         message.what=0;
-        handler.sendMessage(message);
+
+        try {
+            baseSystemManager.deviceServiceLogin(context, null, "99999999", new OnServiceStatusListener() {
+                @Override
+                public void onStatus(int i) {
+
+                    KLog.d("onStatus",""+i);
+                    handler.sendMessage(message);
+                }
+            });
+
+        } catch (SdkException e) {
+            e.printStackTrace();
+        }
+
 
     }
     public void getForTrial(String appId , String appKey, ReqDetailJson reqDetailJson, RespCallBack respCallBack, RespErrorCallBack respErrorCallBack){
@@ -97,11 +98,23 @@ public class ApiManager {
         this.appId=appId;
         this.appKey=appKey;
         this.reqDetailJson=reqDetailJson;
-        Message message=new Message();
+        final Message message=new Message();
         message.arg1=1;
         message.obj=UrUtil.forTrial;
         message.what=0;
-        handler.sendMessage(message);
+        try {
+            baseSystemManager.deviceServiceLogin(context, null, "99999999", new OnServiceStatusListener() {
+                @Override
+                public void onStatus(int i) {
+
+                    KLog.d("onStatus",""+i);
+                    handler.sendMessage(message);
+                }
+            });
+
+        } catch (SdkException e) {
+            e.printStackTrace();
+        }
 
     }
     public void getRecordPaymentInfo (String appId, String appKey, ReqDetailJson reqDetailJson, RespCallBack respCallBack, RespErrorCallBack respErrorCallBack){
@@ -110,11 +123,23 @@ public class ApiManager {
         this.appId=appId;
         this.appKey=appKey;
         this.reqDetailJson=reqDetailJson;
-        Message message=new Message();
+        final Message message=new Message();
         message.arg1=2;
         message.obj=UrUtil.recordPaymentInfo;
         message.what=0;
-        handler.sendMessage(message);
+        try {
+            baseSystemManager.deviceServiceLogin(context, null, "99999999", new OnServiceStatusListener() {
+                @Override
+                public void onStatus(int i) {
+
+                    KLog.d("onStatus",""+i);
+                    handler.sendMessage(message);
+                }
+            });
+
+        } catch (SdkException e) {
+            e.printStackTrace();
+        }
 
     }
     public void getOrderInfo(String appId , String appKey, ReqDetailJson reqDetailJson, RespCallBack respCallBack, RespErrorCallBack respErrorCallBack){
@@ -123,11 +148,23 @@ public class ApiManager {
         this.appId=appId;
         this.appKey=appKey;
         this.reqDetailJson=reqDetailJson;
-        Message message=new Message();
+        final Message message=new Message();
         message.arg1=3;
         message.obj=UrUtil.getOrderInfo;
         message.what=0;
-        handler.sendMessage(message);
+        try {
+            baseSystemManager.deviceServiceLogin(context, null, "99999999", new OnServiceStatusListener() {
+                @Override
+                public void onStatus(int i) {
+
+                    KLog.d("onStatus",""+i);
+                    handler.sendMessage(message);
+                }
+            });
+
+        } catch (SdkException e) {
+            e.printStackTrace();
+        }
 
     }
 
