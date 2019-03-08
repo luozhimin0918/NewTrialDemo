@@ -18,11 +18,19 @@ android {
     buildTypes {
         debug {
             buildConfigField "boolean", "LOG_DEBUG", "true"
+            manifestPlaceholders = [
+                    "@APP_ID_PAY" : "",
+                    "@APP_KEY_PAY" : ""
+            ]
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "boolean", "LOG_DEBUG", "false"
+            manifestPlaceholders = [
+                    "@APP_ID_PAY" : "",
+                    "@APP_KEY_PAY" : ""
+            ]
         }
     }
 
