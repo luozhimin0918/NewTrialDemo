@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.yinlian.tariff.index.ApiManager;
+import com.example.yinlian.tariff.lisetener.payListener;
 import com.example.yinlian.tariff.model.ReqDetailJson;
 import com.socks.library.KLog;
 import com.ums.asus.umspaydemo.utils.CallPayUtill;
@@ -19,7 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements payListener {
 
     @BindView(R.id.taocanOne)
     TextView taocanOne;
@@ -102,6 +103,8 @@ public class MainActivity extends AppCompatActivity {
                 KLog.d("ApiMa", errorStr);
             }
         });
+//        PayStateListenerManager.getInstance().setConnectionStateListener(this);
+//        startActivity(new Intent(this, PayActivity.class));
     }
 
     @OnClick({R.id.taocanOne, R.id.taocanTwo, R.id.taocanThree})
@@ -144,5 +147,22 @@ public class MainActivity extends AppCompatActivity {
                 });
                 break;
         }
+    }
+
+    @Override
+    public void onConnecting() {
+         KLog.d("Connnnn","onConnecting");
+    }
+
+    @Override
+    public void onConnected() {
+        KLog.d("Connnnn","onConnected");
+
+    }
+
+    @Override
+    public void onDisConnected() {
+        KLog.d("Connnnn","onDisConnected");
+
     }
 }
