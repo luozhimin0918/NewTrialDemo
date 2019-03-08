@@ -1,11 +1,13 @@
 package com.ums.asus.newtrialdemo;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.example.yinlian.tariff.index.ApiManager;
 import com.example.yinlian.tariff.model.ReqDetailJson;
+import com.ums.shdep.reward.RewardActivity;
 
 public class MainActivity extends AppCompatActivity {
     ApiManager apiManager;
@@ -27,5 +29,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("onResponse",s.toString());
             }
         });
+        startActivity(new Intent(this, RewardActivity.class));
     }
 }
