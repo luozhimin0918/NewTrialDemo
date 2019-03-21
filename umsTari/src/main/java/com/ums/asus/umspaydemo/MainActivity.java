@@ -1,12 +1,15 @@
 package com.ums.asus.umspaydemo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.yinlian.tariff.PayActivity;
 import com.example.yinlian.tariff.index.ApiManager;
+import com.example.yinlian.tariff.lisetener.PayStateListenerManager;
 import com.example.yinlian.tariff.lisetener.payListener;
 import com.example.yinlian.tariff.model.ReqDetailJson;
 import com.socks.library.KLog;
@@ -103,8 +106,8 @@ public class MainActivity extends AppCompatActivity implements payListener {
                 KLog.d("ApiMa", errorStr);
             }
         });
-//        PayStateListenerManager.getInstance().setConnectionStateListener(this);
-//        startActivity(new Intent(this, PayActivity.class));
+        PayStateListenerManager.getInstance().setConnectionStateListener(this);
+        startActivity(new Intent(this, PayActivity.class));
     }
 
     @OnClick({R.id.taocanOne, R.id.taocanTwo, R.id.taocanThree})

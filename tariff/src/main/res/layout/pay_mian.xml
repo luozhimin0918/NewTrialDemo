@@ -1,19 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-  >
+
+    android:orientation="vertical">
 
 
    <LinearLayout
+       android:background="@color/white"
+       android:gravity="center_vertical"
        android:layout_width="match_parent"
-       android:layout_height="match_parent">
+       android:layout_height="wrap_content">
+       <ImageButton
+           android:id="@+id/back_imag"
+           android:layout_margin="15dp"
+           android:focusable="true"
+           android:clickable="true"
+           android:background="@mipmap/icon_back"
+           android:layout_width="10dp"
+           android:layout_height="20dp" />
        <TextView
-           android:text="的地方是"
-           android:textSize="18sp"
+           android:layout_weight="1"
+           android:gravity="center_horizontal"
            android:layout_width="match_parent"
-           android:layout_height="match_parent" />
+           android:layout_height="wrap_content"
+           android:text="我的服务"
+           android:textColor="#FF464646"
+           android:textSize="36px"
+           />
+       <ImageButton
+           android:visibility="invisible"
+           android:layout_margin="15dp"
+           android:focusable="true"
+           android:clickable="true"
+           android:background="@mipmap/icon_back"
+           android:layout_width="10dp"
+           android:layout_height="20dp" />
    </LinearLayout>
 
 
-</RelativeLayout>
+</LinearLayout>
