@@ -11,9 +11,9 @@ public class PriceInfo implements Serializable {
      * tariffTag : 套餐一
      * probation : 15
      * isDefaulted : 1
-     * originalPrice : 10
-     * presentPrice : 10
-     * discount : 10
+     * originalPrice : 10 原价
+     * presentPrice : 10 现价
+     * discount : 10  折扣价
      * serviceTerm : 1
      */
 

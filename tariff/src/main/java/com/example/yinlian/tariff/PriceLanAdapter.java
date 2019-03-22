@@ -18,12 +18,10 @@ public class PriceLanAdapter extends RecyclerView.Adapter<PriceLanAdapter.ViewHo
 
     static class ViewHolder extends RecyclerView.ViewHolder{
         ImageView caozhiImage;
-        TextView iconName;
 
         public ViewHolder(View view){
             super(view);
             caozhiImage = (ImageView) view.findViewById(R.id.caozhiImage);
-            iconName = (TextView) view.findViewById(R.id.icon_name);
         }
     }
 
@@ -48,7 +46,6 @@ public class PriceLanAdapter extends RecyclerView.Adapter<PriceLanAdapter.ViewHo
             holder.caozhiImage.setVisibility(View.GONE);
         }
 
-        holder.iconName.setText(icon.getTariffDesc());
     }
 
     @Override
