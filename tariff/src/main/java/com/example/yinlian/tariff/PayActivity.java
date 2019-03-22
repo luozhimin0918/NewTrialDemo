@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 
 import com.example.yinlian.tariff.lisetener.PayStateListenerManager;
 import com.example.yinlian.tariff.model.PriceInfo;
+import com.socks.library.KLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,17 @@ public class PayActivity extends Activity implements View.OnClickListener {
         PriceLanAdapter adapter = new PriceLanAdapter(priceInfoList);
         //完成adapter设置
         recycler_view.setAdapter(adapter);
+        adapter.setmOnItemClickListener(new PriceLanAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                KLog.d(position+"");
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+
+            }
+        });
     }
 
     private void init() {

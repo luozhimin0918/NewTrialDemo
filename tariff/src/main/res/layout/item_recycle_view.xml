@@ -4,6 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
     <LinearLayout
+        android:id="@+id/bgStyle"
         android:background="@drawable/bg_jianbian_select"
         android:orientation="vertical"
         android:layout_marginRight="10dp"
