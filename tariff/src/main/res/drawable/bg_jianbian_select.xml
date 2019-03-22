@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="5dp"/>
+    <stroke
+        android:width="3px"
+        android:color="#F94A3D"/>
+    <!--gradient 中 android:angle数据类型为Integer，代表渐变颜色的角度。
+    0 表示从左到右, 90从下到上 . 逆时针方向依此类推即可获得各种角度变化 但其取值必须
+    是45的整数倍.且该属性只有在android:type="linear"情况下起作用，默认的type为linear。
+    android:angle默认取值为0. 表示从左到右 -->
+    <gradient
+        android:type="radial"
+        android:gradientRadius="2000"
+        android:startColor="#F4C29F"
+        android:endColor="#F7E2CA"/>
+</shape>

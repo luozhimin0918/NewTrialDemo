@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:background="@drawable/bg_jianbian_select"
+        android:orientation="vertical"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginLeft="4dp"
+        android:layout_width="100dp"
+        android:layout_height="150dp">
+        <ImageView
+            android:id="@+id/icon_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/icon_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"/>
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/caozhiImage"
+        android:visibility="visible"
+        android:background="@mipmap/caozhi"
+        android:layout_width="60dp"
+        android:layout_height="23dp" />
+</FrameLayout>

@@ -99,6 +99,13 @@
                 android:textSize="28px"
                 />
         </LinearLayout>
+        //价格栏
+        <android.support.v7.widget.RecyclerView
+            android:layout_margin="10dp"
+            android:overScrollMode="never"
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 
