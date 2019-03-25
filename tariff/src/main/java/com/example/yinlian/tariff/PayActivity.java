@@ -9,10 +9,14 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 
+import com.alibaba.fastjson.JSON;
 import com.example.yinlian.tariff.index.ApiManager;
 import com.example.yinlian.tariff.lisetener.PayStateListenerManager;
+import com.example.yinlian.tariff.model.OrderinfiRespJson;
+import com.example.yinlian.tariff.model.OrderinfiTime;
 import com.example.yinlian.tariff.model.PriceInfo;
 import com.example.yinlian.tariff.model.ReqDetailJson;
+import com.example.yinlian.tariff.model.TariffRespJson;
 import com.socks.library.KLog;
 
 import java.util.ArrayList;
@@ -36,14 +40,57 @@ public class PayActivity extends Activity implements View.OnClickListener {
     }
 
     private void doing() {
-        ApiManager apiManager = ApiManager.getInstance(this);
-
+        final ApiManager apiManager = ApiManager.getInstance(this);
+        final String appId ="6694fb55b3b446809aec8002b9a7a0e8";
+        final String appKey="ac6d287a30ef498c89ae2bb7fd27889d";
         final ReqDetailJson reqDetailJson = new ReqDetailJson();
         reqDetailJson.setTariffDescList("");
-        apiManager.getTariffInfo("6694fb55b3b446809aec8002b9a7a0e8", "ac6d287a30ef498c89ae2bb7fd27889d", reqDetailJson, new ApiManager.RespCallBack() {
+        apiManager.getTariffInfo(appId, appKey, reqDetailJson, new ApiManager.RespCallBack() {
             @Override
             public void onResponse(String jsonRespString) {
                      KLog.json("getTariffInfo",jsonRespString);
+                TariffRespJson tariffRespJson = JSON.parseObject(jsonRespString, TariffRespJson.class);
+                if (tariffRespJson.getData() != null && tariffRespJson.getData().getTariffInfoList() != null) {
+                    //有套餐的
+
+                    KLog.d("getTariffInfo", tariffRespJson.getMsg());
+                    apiManager.getOrderInfo(appId, appKey, reqDetailJson, new ApiManager.RespCallBack() {
+                        @Override
+                        public void onResponse(String jsonRespString) {
+                            KLog.json("getOrderInfo", jsonRespString);
+                            OrderinfiRespJson orderinfiRespJson = JSON.parseObject(jsonRespString, OrderinfiRespJson.class);
+
+                            if (orderinfiRespJson != null && orderinfiRespJson.getData() != null) {
+                                String respDetailJson = orderinfiRespJson.getData().getRespDetail();
+                                if (respDetailJson == null) {
+                                    /**
+                                     *没订单
+                                     */
+                                }else{
+                                    /**
+                                     *有订单
+                                     */
+                                    List<OrderinfiTime> orderinfiTimeList = JSON.parseArray(respDetailJson, OrderinfiTime.class);
+                                    int RemainingDays = orderinfiTimeList.get(0).getRemainingDays();
+                                    if (RemainingDays == 0) {//套餐过期后，提示框出现
+
+                                    }else{
+                                        //还剩多少天
+                                    }
+                                }
+                            }
+
+                        }
+                    }, new ApiManager.RespErrorCallBack() {
+                        @Override
+                        public void onError(String errorStr) {
+
+                        }
+                    });
+                }
+
+
+
             }
         }, new ApiManager.RespErrorCallBack() {
             @Override
