@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.example.yinlian.tariff.index.ApiManager;
@@ -28,6 +30,7 @@ import java.util.List;
 public class PayActivity extends Activity implements View.OnClickListener {
     ImageButton back_imag;
     RecyclerView recycler_view;
+    TextView RemainingDayText;
     private List<PriceInfo> priceInfoList = new ArrayList<>();
 
     @Override
@@ -41,14 +44,14 @@ public class PayActivity extends Activity implements View.OnClickListener {
 
     private void doing() {
         final ApiManager apiManager = ApiManager.getInstance(this);
-        final String appId ="6694fb55b3b446809aec8002b9a7a0e8";
-        final String appKey="ac6d287a30ef498c89ae2bb7fd27889d";
+        final String appId = "6694fb55b3b446809aec8002b9a7a0e8";
+        final String appKey = "ac6d287a30ef498c89ae2bb7fd27889d";
         final ReqDetailJson reqDetailJson = new ReqDetailJson();
         reqDetailJson.setTariffDescList("");
         apiManager.getTariffInfo(appId, appKey, reqDetailJson, new ApiManager.RespCallBack() {
             @Override
             public void onResponse(String jsonRespString) {
-                     KLog.json("getTariffInfo",jsonRespString);
+                KLog.json("getTariffInfo", jsonRespString);
                 TariffRespJson tariffRespJson = JSON.parseObject(jsonRespString, TariffRespJson.class);
                 if (tariffRespJson.getData() != null && tariffRespJson.getData().getTariffInfoList() != null) {
                     //有套餐的
@@ -66,16 +69,19 @@ public class PayActivity extends Activity implements View.OnClickListener {
                                     /**
                                      *没订单
                                      */
-                                }else{
+                                    RemainingDayText.setText("未开通");
+                                } else {
                                     /**
                                      *有订单
                                      */
                                     List<OrderinfiTime> orderinfiTimeList = JSON.parseArray(respDetailJson, OrderinfiTime.class);
                                     int RemainingDays = orderinfiTimeList.get(0).getRemainingDays();
                                     if (RemainingDays == 0) {//套餐过期后，提示框出现
-
-                                    }else{
+                                        RemainingDayText.setText("已过期");
+                                    } else {
                                         //还剩多少天
+                                      String   upString = "还剩<font color='#FB493F'><bold>" + RemainingDays + "</bold></font>天";
+                                        RemainingDayText.setText(Html.fromHtml(upString));
                                     }
                                 }
                             }
@@ -90,17 +96,16 @@ public class PayActivity extends Activity implements View.OnClickListener {
                 }
 
 
-
             }
         }, new ApiManager.RespErrorCallBack() {
             @Override
             public void onError(String errorStr) {
-                KLog.d("getTariffInfo",errorStr);
+                KLog.d("getTariffInfo", errorStr);
 
             }
         });
-        for(int i=0;i<5;i++){
-            PriceInfo priceInfo=new PriceInfo();
+        for (int i = 0; i < 5; i++) {
+            PriceInfo priceInfo = new PriceInfo();
             priceInfo.setTariffDesc("");
             priceInfoList.add(priceInfo);
         }
@@ -120,7 +125,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
         adapter.setmOnItemClickListener(new PriceLanAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                KLog.d(position+"");
+                KLog.d(position + "");
             }
 
             @Override
@@ -131,9 +136,10 @@ public class PayActivity extends Activity implements View.OnClickListener {
     }
 
     private void init() {
-        back_imag=findViewById(R.id.back_imag);
+        back_imag = findViewById(R.id.back_imag);
         back_imag.setOnClickListener(this);
-        recycler_view=findViewById(R.id.recycler_view);
+        recycler_view = findViewById(R.id.recycler_view);
+        RemainingDayText=findViewById(R.id.RemainingDayText);
     }
 
     @Override
