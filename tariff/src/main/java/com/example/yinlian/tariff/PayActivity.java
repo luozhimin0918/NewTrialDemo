@@ -30,7 +30,7 @@ import java.util.List;
 public class PayActivity extends Activity implements View.OnClickListener {
     ImageButton back_imag;
     RecyclerView recycler_view;
-    TextView RemainingDayText;
+    TextView RemainingDayText,xuMoney;
     private List<PriceInfo> priceInfoList = new ArrayList<>();
 
     @Override
@@ -83,6 +83,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
                                       String   upString = "还剩<font color='#FB493F'><bold>" + RemainingDays + "</bold></font>天";
                                         RemainingDayText.setText(Html.fromHtml(upString));
                                     }
+                                    xuMoney.setText("立即续费");//开通了服务，显示立即续费
                                 }
                             }
 
@@ -140,6 +141,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
         back_imag.setOnClickListener(this);
         recycler_view = findViewById(R.id.recycler_view);
         RemainingDayText=findViewById(R.id.RemainingDayText);
+        xuMoney=findViewById(R.id.xuMoney);
     }
 
     @Override
