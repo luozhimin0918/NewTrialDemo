@@ -36,6 +36,11 @@
             android:layout_height="20dp" />
     </LinearLayout>
     //内容主体
+    <ScrollView
+        android:overScrollMode="never"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
         android:layout_weight="1"
         android:orientation="vertical"
@@ -72,7 +77,7 @@
             android:padding="10dp"
             android:background="@drawable/bg_center_white"
             android:layout_width="match_parent"
-            android:layout_height="100dp">
+            android:layout_height="wrap_content">
             <TextView
                 android:text="•	云端数据无上限存储云端数据无上限存储云端数
     •	本地订单流水信息实时备份
@@ -101,14 +106,69 @@
         </LinearLayout>
         //价格栏
         <android.support.v7.widget.RecyclerView
-            android:layout_margin="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:overScrollMode="never"
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+        //试用期
+        <LinearLayout
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:padding="10dp"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:background="@drawable/bg_center_white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tariffDesc"
+                android:text="免费试用15天"
+                android:textSize="28px"
+                android:textColor="#7C624B"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                />
+
+            <TextView
+                android:text="限购一次"
+                android:textSize="22px"
+                android:textColor="#FB493F"
+                android:layout_margin="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                />
+        </LinearLayout>
+        //立即开通
+        <LinearLayout
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="100dp"
+            android:padding="10dp"
+            android:orientation="vertical"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_horizontal"
+            android:background="@drawable/selector_open_btn_bg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="立即开通"
+                android:textSize="30px"
+                android:textColor="#EFD0A0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                />
+        </LinearLayout>
 
     </LinearLayout>
-
+    </ScrollView>
 
 
 
