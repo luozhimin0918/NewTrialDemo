@@ -9,8 +9,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 
+import com.example.yinlian.tariff.index.ApiManager;
 import com.example.yinlian.tariff.lisetener.PayStateListenerManager;
 import com.example.yinlian.tariff.model.PriceInfo;
+import com.example.yinlian.tariff.model.ReqDetailJson;
 import com.socks.library.KLog;
 
 import java.util.ArrayList;
@@ -34,6 +36,22 @@ public class PayActivity extends Activity implements View.OnClickListener {
     }
 
     private void doing() {
+        ApiManager apiManager = ApiManager.getInstance(this);
+
+        final ReqDetailJson reqDetailJson = new ReqDetailJson();
+        reqDetailJson.setTariffDescList("");
+        apiManager.getTariffInfo("6694fb55b3b446809aec8002b9a7a0e8", "ac6d287a30ef498c89ae2bb7fd27889d", reqDetailJson, new ApiManager.RespCallBack() {
+            @Override
+            public void onResponse(String jsonRespString) {
+                     KLog.json("getTariffInfo",jsonRespString);
+            }
+        }, new ApiManager.RespErrorCallBack() {
+            @Override
+            public void onError(String errorStr) {
+                KLog.d("getTariffInfo",errorStr);
+
+            }
+        });
         for(int i=0;i<5;i++){
             PriceInfo priceInfo=new PriceInfo();
             priceInfo.setTariffDesc("");
