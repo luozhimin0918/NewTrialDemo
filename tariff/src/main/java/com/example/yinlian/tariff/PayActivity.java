@@ -31,7 +31,7 @@ import java.util.List;
 public class PayActivity extends Activity implements View.OnClickListener {
     ImageButton back_imag;
     RecyclerView recycler_view;
-    TextView RemainingDayText,xuMoney;
+    TextView RemainingDayText,xuMoney,tariffTag;
     LinearLayout discountLinear;
     private List<TariffRespJson.DataBean.TariffInfoListBean> priceInfoList = new ArrayList<>();
 
@@ -62,6 +62,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
             @Override
             public void onItemClick(View view, int position) {
                 KLog.d(position + "");
+
             }
 
             @Override
@@ -84,6 +85,15 @@ public class PayActivity extends Activity implements View.OnClickListener {
                     List<TariffRespJson.DataBean.TariffInfoListBean> tariffInfoList= tariffRespJson.getData().getTariffInfoList();
                     priceInfoList.addAll(tariffInfoList);
                     adapter.notifyDataSetChanged();
+                    //当前选择套餐名称
+                    String  DefaultedPostion ="";
+                    for(int i=0;i<tariffInfoList.size();i++){
+                        if(tariffInfoList.get(i).getIsDefaulted()==1){
+                            DefaultedPostion=tariffInfoList.get(i).getTariffTag();
+                            break;
+                        }
+                    }
+                    tariffTag.setText(DefaultedPostion);
 
                     KLog.d("getTariffInfo", tariffRespJson.getMsg());
                     apiManager.getOrderInfo(appId, appKey, reqDetailJson, new ApiManager.RespCallBack() {
@@ -151,6 +161,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
         RemainingDayText=findViewById(R.id.RemainingDayText);
         xuMoney=findViewById(R.id.xuMoney);
         discountLinear=findViewById(R.id.discountLinear);
+        tariffTag=findViewById(R.id.tariffTag);
     }
 
     @Override
