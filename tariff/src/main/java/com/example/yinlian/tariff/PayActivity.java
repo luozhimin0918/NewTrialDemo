@@ -86,14 +86,14 @@ public class PayActivity extends Activity implements View.OnClickListener {
                     priceInfoList.addAll(tariffInfoList);
                     adapter.notifyDataSetChanged();
                     //当前选择套餐名称
-                    String  DefaultedPostion ="";
+                    /*String  DefaultedPostion ="";
                     for(int i=0;i<tariffInfoList.size();i++){
                         if(tariffInfoList.get(i).getIsDefaulted()==1){
                             DefaultedPostion=tariffInfoList.get(i).getTariffTag();
                             break;
                         }
                     }
-                    tariffTag.setText(DefaultedPostion);
+                    tariffTag.setText(DefaultedPostion);*/
 
                     KLog.d("getTariffInfo", tariffRespJson.getMsg());
                     apiManager.getOrderInfo(appId, appKey, reqDetailJson, new ApiManager.RespCallBack() {
