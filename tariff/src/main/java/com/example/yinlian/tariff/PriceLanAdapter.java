@@ -12,10 +12,11 @@ import android.widget.TextView;
 import java.util.List;
 import android.support.v7.widget.RecyclerView;
 import com.example.yinlian.tariff.model.PriceInfo;
+import com.example.yinlian.tariff.model.TariffRespJson;
 
 public class PriceLanAdapter extends RecyclerView.Adapter<PriceLanAdapter.ViewHolder> {
 
-    private List<PriceInfo> mIconList;
+    private List<TariffRespJson.DataBean.TariffInfoListBean> mIconList;
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
 
@@ -39,7 +40,7 @@ public class PriceLanAdapter extends RecyclerView.Adapter<PriceLanAdapter.ViewHo
         }
     }
 
-    public PriceLanAdapter(List<PriceInfo> iconList){
+    public PriceLanAdapter(List<TariffRespJson.DataBean.TariffInfoListBean> iconList){
         mIconList = iconList;
     }
 
@@ -53,7 +54,7 @@ public class PriceLanAdapter extends RecyclerView.Adapter<PriceLanAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        PriceInfo icon = mIconList.get(position);
+        TariffRespJson.DataBean.TariffInfoListBean icon = mIconList.get(position);
         if(icon.getIsDefaulted()==1){
             holder.caozhiImage.setVisibility(View.VISIBLE);
             holder.bgStyle.setBackgroundResource(R.drawable.bg_jianbian_select);

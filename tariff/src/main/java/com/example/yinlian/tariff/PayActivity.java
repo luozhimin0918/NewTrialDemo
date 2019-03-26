@@ -33,7 +33,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
     RecyclerView recycler_view;
     TextView RemainingDayText,xuMoney;
     LinearLayout discountLinear;
-    private List<PriceInfo> priceInfoList = new ArrayList<>();
+    private List<TariffRespJson.DataBean.TariffInfoListBean> priceInfoList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,6 +45,30 @@ public class PayActivity extends Activity implements View.OnClickListener {
     }
 
     private void doing() {
+        final PriceLanAdapter adapter;
+        //价格栏
+        //获取RecyclerView的实例
+        //创建一个layoutManager，这里使用LinearLayoutManager指定为线性，也就可以有ListView这样的效果
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        //调整RecyclerView的排列方向
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        //完成layoutManager设置
+        recycler_view.setLayoutManager(layoutManager);
+        //创建IconAdapter的实例同时将iconList传入其构造函数
+        adapter = new PriceLanAdapter(priceInfoList);
+        //完成adapter设置
+        recycler_view.setAdapter(adapter);
+        adapter.setmOnItemClickListener(new PriceLanAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                KLog.d(position + "");
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+
+            }
+        });
         final ApiManager apiManager = ApiManager.getInstance(this);
         final String appId = "6694fb55b3b446809aec8002b9a7a0e8";
         final String appKey = "ac6d287a30ef498c89ae2bb7fd27889d";
@@ -57,6 +81,9 @@ public class PayActivity extends Activity implements View.OnClickListener {
                 TariffRespJson tariffRespJson = JSON.parseObject(jsonRespString, TariffRespJson.class);
                 if (tariffRespJson.getData() != null && tariffRespJson.getData().getTariffInfoList() != null) {
                     //有套餐的
+                    List<TariffRespJson.DataBean.TariffInfoListBean> tariffInfoList= tariffRespJson.getData().getTariffInfoList();
+                    priceInfoList.addAll(tariffInfoList);
+                    adapter.notifyDataSetChanged();
 
                     KLog.d("getTariffInfo", tariffRespJson.getMsg());
                     apiManager.getOrderInfo(appId, appKey, reqDetailJson, new ApiManager.RespCallBack() {
@@ -109,34 +136,12 @@ public class PayActivity extends Activity implements View.OnClickListener {
             }
         });
         for (int i = 0; i < 5; i++) {
-            PriceInfo priceInfo = new PriceInfo();
+            TariffRespJson.DataBean.TariffInfoListBean priceInfo = new TariffRespJson.DataBean.TariffInfoListBean();
             priceInfo.setTariffDesc("");
-            priceInfoList.add(priceInfo);
+//            priceInfoList.add(priceInfo);
         }
 
-        //价格栏
-        //获取RecyclerView的实例
-        //创建一个layoutManager，这里使用LinearLayoutManager指定为线性，也就可以有ListView这样的效果
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        //调整RecyclerView的排列方向
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        //完成layoutManager设置
-        recycler_view.setLayoutManager(layoutManager);
-        //创建IconAdapter的实例同时将iconList传入其构造函数
-        PriceLanAdapter adapter = new PriceLanAdapter(priceInfoList);
-        //完成adapter设置
-        recycler_view.setAdapter(adapter);
-        adapter.setmOnItemClickListener(new PriceLanAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                KLog.d(position + "");
-            }
 
-            @Override
-            public void onItemLongClick(View view, int position) {
-
-            }
-        });
     }
 
     private void init() {
