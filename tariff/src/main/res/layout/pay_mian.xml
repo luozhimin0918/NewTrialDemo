@@ -116,6 +116,8 @@
             android:layout_height="wrap_content"/>
         //试用期
         <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/discountLinear"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:padding="10dp"

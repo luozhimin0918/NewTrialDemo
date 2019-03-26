@@ -9,6 +9,7 @@ import android.text.Html;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -31,6 +32,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
     ImageButton back_imag;
     RecyclerView recycler_view;
     TextView RemainingDayText,xuMoney;
+    LinearLayout discountLinear;
     private List<PriceInfo> priceInfoList = new ArrayList<>();
 
     @Override
@@ -84,6 +86,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
                                         RemainingDayText.setText(Html.fromHtml(upString));
                                     }
                                     xuMoney.setText("立即续费");//开通了服务，显示立即续费
+                                    discountLinear.setVisibility(View.GONE);//有订单后都没有试用期了
                                 }
                             }
 
@@ -142,6 +145,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
         recycler_view = findViewById(R.id.recycler_view);
         RemainingDayText=findViewById(R.id.RemainingDayText);
         xuMoney=findViewById(R.id.xuMoney);
+        discountLinear=findViewById(R.id.discountLinear);
     }
 
     @Override
