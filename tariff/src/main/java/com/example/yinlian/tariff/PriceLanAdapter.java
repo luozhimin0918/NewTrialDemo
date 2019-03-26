@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import java.text.DecimalFormat;
 import java.util.List;
 import android.support.v7.widget.RecyclerView;
 import com.example.yinlian.tariff.model.PriceInfo;
@@ -32,11 +33,15 @@ public class PriceLanAdapter extends RecyclerView.Adapter<PriceLanAdapter.ViewHo
     static class ViewHolder extends RecyclerView.ViewHolder{
         ImageView caozhiImage;
         LinearLayout bgStyle;
-
+        TextView tariffDesc,presentPrice,originalPrice,discount;
         public ViewHolder(View view){
             super(view);
             caozhiImage =  view.findViewById(R.id.caozhiImage);
             bgStyle=view.findViewById(R.id.bgStyle);
+            tariffDesc=view.findViewById(R.id.tariffDesc);
+            presentPrice=view.findViewById(R.id.presentPrice);
+            originalPrice=view.findViewById(R.id.originalPrice);
+            discount=view.findViewById(R.id.discount);
         }
     }
 
@@ -62,6 +67,11 @@ public class PriceLanAdapter extends RecyclerView.Adapter<PriceLanAdapter.ViewHo
             holder.caozhiImage.setVisibility(View.GONE);
             holder.bgStyle.setBackgroundResource(R.drawable.bg_center_white);
         }
+        holder.tariffDesc.setText("开通"+icon.getServiceTerm()+"个月");
+        holder.presentPrice.setText("¥"+icon.getPresentPrice());
+        holder.originalPrice.setText("¥"+icon.getOriginalPrice());
+        double distan =icon.getOriginalPrice()-icon.getPresentPrice();
+        holder.discount.setText("立省"+new DecimalFormat("#.##").format(distan)+"元");
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
