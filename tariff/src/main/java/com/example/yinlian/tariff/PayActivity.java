@@ -38,6 +38,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
     LinearLayout discountLinear,shopButLinear;//试用按钮，立即开通按钮
     private List<TariffRespJson.DataBean.TariffInfoListBean> priceInfoList = new ArrayList<>();
     private int SelectTaoPosition = -1;//默认选择的套餐下标
+    private boolean  ishaveDingdang=false;//是否有开通订单
     ApiManager apiManager ;
     String appId = "6694fb55b3b446809aec8002b9a7a0e8";
     String appKey = "ac6d287a30ef498c89ae2bb7fd27889d";
@@ -70,6 +71,13 @@ public class PayActivity extends Activity implements View.OnClickListener {
             public void onItemClick(View view, int position) {
                 KLog.d(position + "");
                 SelectTaoPosition=position;
+                int probationIntSelect  =priceInfoList.get(SelectTaoPosition).getProbation();
+                if(!ishaveDingdang&&probationIntSelect>0){
+                    discountLinear.setVisibility(View.VISIBLE);
+                    probationDay.setText("免费试用"+probationIntSelect+"天");
+                }else{
+                    discountLinear.setVisibility(View.GONE);
+                }
 
             }
 
@@ -107,6 +115,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
                                     /**
                                      *没订单
                                      */
+                                    ishaveDingdang=false;//没有订单
                                     RemainingDayText.setText("未开通");
                                     xuMoney.setText("立即开通");//未开通了服务，显示立即开通
                                     //查出后台默认套餐是否有试用期
@@ -126,6 +135,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
                                     /**
                                      *有订单
                                      */
+                                    ishaveDingdang=true;//有订单
                                     List<OrderinfiTime> orderinfiTimeList = JSON.parseArray(respDetailJson, OrderinfiTime.class);
                                     int RemainingDays = orderinfiTimeList.get(0).getRemainingDays();
                                     if (RemainingDays == 0) {//套餐过期后，提示框出现
