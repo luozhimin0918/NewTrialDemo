@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.example.yinlian.tariff.index.ApiManager;
 import com.example.yinlian.tariff.lisetener.PayStateListenerManager;
+import com.example.yinlian.tariff.model.ForTarilRespJson;
 import com.example.yinlian.tariff.model.OrderinfiRespJson;
 import com.example.yinlian.tariff.model.OrderinfiTime;
 import com.example.yinlian.tariff.model.RecordRespJson;
@@ -199,6 +200,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
         RemainingDayText=findViewById(R.id.RemainingDayText);
         xuMoney=findViewById(R.id.xuMoney);
         discountLinear=findViewById(R.id.discountLinear);
+        discountLinear.setOnClickListener(this);
         tariffTag=findViewById(R.id.tariffTag);
         shopButLinear=findViewById(R.id.shopButLinear);
         shopButLinear.setOnClickListener(this);
@@ -217,6 +219,33 @@ public class PayActivity extends Activity implements View.OnClickListener {
         if (i == R.id.back_imag) {
             finish();
             PayStateListenerManager.getInstance().connected();
+        }
+        if(i==R.id.discountLinear){
+            ReqDetailJson reqDetailJson = new ReqDetailJson();
+            reqDetailJson.setTariffDesc(ProbatinTariffDesc);
+            apiManager.getForTrial(appId, appKey, reqDetailJson, new ApiManager.RespCallBack() {
+                @Override
+                public void onResponse(String jsonRespString) {
+                    KLog.json("ApigetForTrial",jsonRespString);
+
+                    try{
+                        ForTarilRespJson forTarilRespJson =JSON.parseObject(jsonRespString,ForTarilRespJson.class);
+                        if(forTarilRespJson.getState().equals("0001")){
+                            Toast.makeText(getApplicationContext(),forTarilRespJson.getMsg(),Toast.LENGTH_LONG).show();
+                        }else {
+                            Toast.makeText(getApplicationContext(),forTarilRespJson.getMsg(),Toast.LENGTH_LONG).show();
+                        }
+                    }catch (Exception e){
+
+                    }
+                }
+            }, new ApiManager.RespErrorCallBack() {
+                @Override
+                public void onError(String errorStr) {
+                    KLog.json("ApigetForTrial",errorStr);
+                    Toast.makeText(getApplicationContext(),"试用期申请失败",Toast.LENGTH_LONG).show();
+                }
+            });
         }
         if(i==R.id.shopButLinear){
             if(SelectTaoPosition==-1){//如果没有选中套餐列表，找到默认套餐
