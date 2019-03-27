@@ -124,7 +124,7 @@
             android:padding="10dp"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:background="@drawable/bg_center_white"
+            android:background="@drawable/selector_protation_btn_bg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
