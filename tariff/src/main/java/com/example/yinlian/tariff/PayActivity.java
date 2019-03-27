@@ -11,13 +11,14 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.example.yinlian.tariff.index.ApiManager;
 import com.example.yinlian.tariff.lisetener.PayStateListenerManager;
 import com.example.yinlian.tariff.model.OrderinfiRespJson;
 import com.example.yinlian.tariff.model.OrderinfiTime;
-import com.example.yinlian.tariff.model.PriceInfo;
+import com.example.yinlian.tariff.model.RecordRespJson;
 import com.example.yinlian.tariff.model.ReqDetailJson;
 import com.example.yinlian.tariff.model.TariffRespJson;
 import com.socks.library.KLog;
@@ -32,14 +33,18 @@ public class PayActivity extends Activity implements View.OnClickListener {
     ImageButton back_imag;
     RecyclerView recycler_view;
     TextView RemainingDayText,xuMoney,tariffTag;
-    LinearLayout discountLinear;
+    LinearLayout discountLinear,shopButLinear;//试用按钮，立即开通按钮
     private List<TariffRespJson.DataBean.TariffInfoListBean> priceInfoList = new ArrayList<>();
-
+    private int SelectTaoPosition = -1;//默认选择的套餐下标
+    ApiManager apiManager ;
+    String appId = "6694fb55b3b446809aec8002b9a7a0e8";
+    String appKey = "ac6d287a30ef498c89ae2bb7fd27889d";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         setContentView(R.layout.pay_mian);
+        apiManager= ApiManager.getInstance(this);
         init();
         doing();
     }
@@ -62,6 +67,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
             @Override
             public void onItemClick(View view, int position) {
                 KLog.d(position + "");
+                SelectTaoPosition=position;
 
             }
 
@@ -70,9 +76,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
 
             }
         });
-        final ApiManager apiManager = ApiManager.getInstance(this);
-        final String appId = "6694fb55b3b446809aec8002b9a7a0e8";
-        final String appKey = "ac6d287a30ef498c89ae2bb7fd27889d";
+
         final ReqDetailJson reqDetailJson = new ReqDetailJson();
         reqDetailJson.setTariffDescList("");
         apiManager.getTariffInfo(appId, appKey, reqDetailJson, new ApiManager.RespCallBack() {
@@ -85,15 +89,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
                     List<TariffRespJson.DataBean.TariffInfoListBean> tariffInfoList= tariffRespJson.getData().getTariffInfoList();
                     priceInfoList.addAll(tariffInfoList);
                     adapter.notifyDataSetChanged();
-                    //当前选择套餐名称
-                    /*String  DefaultedPostion ="";
-                    for(int i=0;i<tariffInfoList.size();i++){
-                        if(tariffInfoList.get(i).getIsDefaulted()==1){
-                            DefaultedPostion=tariffInfoList.get(i).getTariffTag();
-                            break;
-                        }
-                    }
-                    tariffTag.setText(DefaultedPostion);*/
+
 
                     KLog.d("getTariffInfo", tariffRespJson.getMsg());
                     apiManager.getOrderInfo(appId, appKey, reqDetailJson, new ApiManager.RespCallBack() {
@@ -162,6 +158,8 @@ public class PayActivity extends Activity implements View.OnClickListener {
         xuMoney=findViewById(R.id.xuMoney);
         discountLinear=findViewById(R.id.discountLinear);
         tariffTag=findViewById(R.id.tariffTag);
+        shopButLinear=findViewById(R.id.shopButLinear);
+        shopButLinear.setOnClickListener(this);
     }
 
     @Override
@@ -177,6 +175,62 @@ public class PayActivity extends Activity implements View.OnClickListener {
             finish();
             PayStateListenerManager.getInstance().connected();
         }
+        if(i==R.id.shopButLinear){
+            if(SelectTaoPosition==-1){//如果没有选中套餐列表，找到默认套餐
+                    for(int j=0;j<priceInfoList.size();j++){
+                        if(priceInfoList.get(j).getIsDefaulted()==1){
+                           SelectTaoPosition=j;
+                            break;
+                        }
+                    }
+            }
+            KLog.d(""+SelectTaoPosition);
+            int priceNow = (int) (priceInfoList.get(SelectTaoPosition).getPresentPrice()*100);//现价
+            String goodName =priceInfoList.get(SelectTaoPosition).getTariffDesc();//商品描述
+            callPay(priceNow,goodName);
+        }
 
+    }
+
+    private void callPay(int priceNow, String goodName) {
+        new RewardPay().pay(getApplicationContext(),goodName,priceNow+"", new RewardPay.OnPayResultListener() {
+            @Override
+            public void onPayResult(int resultCode) {
+                if(resultCode==0){
+
+                    ReqDetailJson reqDetailJson = new ReqDetailJson();
+                    TariffRespJson.DataBean.TariffInfoListBean modelTari = priceInfoList.get(SelectTaoPosition);
+                    reqDetailJson.setTariffDesc(modelTari.getTariffDesc());//套餐描述
+                    reqDetailJson.setPaymentPrice(modelTari.getPresentPrice()+"");//现价
+                    reqDetailJson.setPaymentTerm(modelTari.getServiceTerm()+"");//服务期
+                    reqDetailJson.setPurchaseQuantity("1");
+                    apiManager.getRecordPaymentInfo(appId, appKey, reqDetailJson, new ApiManager.RespCallBack() {
+                        @Override
+                        public void onResponse(String jsonRespString) {
+                            KLog.json("ApiRecordPay",jsonRespString);
+                            RecordRespJson recordRespJson =JSON.parseObject(jsonRespString,RecordRespJson.class);
+                            if(recordRespJson.getState().equals("0001")){
+                              //  finish();
+                                                /*  GlobalValueManager.getInstance().setPayTaoProbeValue(false);//购买套餐成功，允许开探针
+                                                  Intent intent = new Intent(mContext, ProbeService.class);
+                                                  intent.putExtra("openOrCloseProbe", "open");
+                                                  startService(intent);*/
+                            }
+                        }
+                    }, new ApiManager.RespErrorCallBack() {
+                        @Override
+                        public void onError(String errorStr) {
+                            KLog.d("ApiRecordPay",errorStr);
+                        }
+                    });
+                    Toast.makeText(getApplicationContext(),"支付成功",Toast.LENGTH_LONG).show();
+
+                }else if(resultCode==-1){
+                    Toast.makeText(getApplicationContext(),"接口调用失败",Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),"支付失败，重新支付",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 }
