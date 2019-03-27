@@ -107,6 +107,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
                                      *没订单
                                      */
                                     RemainingDayText.setText("未开通");
+                                    xuMoney.setText("立即开通");//未开通了服务，显示立即开通
                                 } else {
                                     /**
                                      *有订单
