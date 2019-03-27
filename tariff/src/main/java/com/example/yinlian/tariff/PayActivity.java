@@ -2,6 +2,7 @@ package com.example.yinlian.tariff;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,6 +26,7 @@ import com.socks.library.KLog;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.os.Handler;
 
 /**
  * Created by Luozhimin on 2019/3/8.15:10
@@ -192,12 +194,17 @@ public class PayActivity extends Activity implements View.OnClickListener {
 
     }
 
+    /**
+     * callPay支付
+     * @param priceNow 支付金额
+     * @param goodName 支付订单名称
+     */
     private void callPay(int priceNow, String goodName) {
         new RewardPay().pay(getApplicationContext(),goodName,priceNow+"", new RewardPay.OnPayResultListener() {
             @Override
             public void onPayResult(int resultCode) {
                 if(resultCode==0){
-
+                  KLog.d("onPayResult",resultCode+" >>>>0");
                     ReqDetailJson reqDetailJson = new ReqDetailJson();
                     TariffRespJson.DataBean.TariffInfoListBean modelTari = priceInfoList.get(SelectTaoPosition);
                     reqDetailJson.setTariffDesc(modelTari.getTariffDesc());//套餐描述
@@ -223,14 +230,35 @@ public class PayActivity extends Activity implements View.OnClickListener {
                             KLog.d("ApiRecordPay",errorStr);
                         }
                     });
-                    Toast.makeText(getApplicationContext(),"支付成功",Toast.LENGTH_LONG).show();
+                    myHandler.sendEmptyMessage(0);//支付成功
 
                 }else if(resultCode==-1){
-                    Toast.makeText(getApplicationContext(),"接口调用失败",Toast.LENGTH_LONG).show();
+                    KLog.d("onPayResult",resultCode+" >>>>-1");
+                    myHandler.sendEmptyMessage(-1);// 接口调用失败
+
                 }else{
-                    Toast.makeText(getApplicationContext(),"支付失败，重新支付",Toast.LENGTH_LONG).show();
+                    KLog.d("onPayResult",resultCode+" >>>>失败");
+                    myHandler.sendEmptyMessage(2);//  支付失败，重新支付
+
                 }
             }
         });
     }
+    private Handler myHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    Toast.makeText(getApplicationContext(),"支付成功",Toast.LENGTH_LONG).show();
+                    break;
+                case 2:
+                    Toast.makeText(getApplicationContext(),"支付失败，重新支付",Toast.LENGTH_LONG).show();
+                    break;
+                case -1:
+                    Toast.makeText(getApplicationContext(),"接口调用失败",Toast.LENGTH_LONG).show();
+                    break;
+            }
+
+        }
+    };
 }
