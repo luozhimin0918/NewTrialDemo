@@ -46,5 +46,5 @@ dependencies {
     implementation files('libs/fastjson-1.1.40.jar')
     implementation files('libs/sdk4upos_20180411_mix.jar')
     implementation 'com.github.zhaokaiqiang.klog:library:0.0.1'
-
+    implementation files('libs/AppInteract_1.0.2_20170331.jar')
 }
