@@ -39,6 +39,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
     private List<TariffRespJson.DataBean.TariffInfoListBean> priceInfoList = new ArrayList<>();
     private int SelectTaoPosition = -1;//默认选择的套餐下标
     private boolean  ishaveDingdang=false;//是否有开通订单
+    private String   ProbatinTariffDesc="";//申请试用的参数套餐详情
     ApiManager apiManager ;
     String appId = "6694fb55b3b446809aec8002b9a7a0e8";
     String appKey = "ac6d287a30ef498c89ae2bb7fd27889d";
@@ -91,6 +92,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
                 if(!ishaveDingdang&&probationIntSelect>0){
                     discountLinear.setVisibility(View.VISIBLE);
                     probationDay.setText("免费试用"+probationIntSelect+"天");
+                    ProbatinTariffDesc= priceInfoList.get(SelectTaoPosition).getTariffDesc();//申请试用的参数
                 }else{
                     discountLinear.setVisibility(View.GONE);
                 }
@@ -139,6 +141,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
                                     for(int j=0;j<priceInfoList.size();j++){
                                         if(priceInfoList.get(j).getIsDefaulted()==1){
                                             probationInt= priceInfoList.get(j).getProbation();
+                                           ProbatinTariffDesc= priceInfoList.get(j).getTariffDesc();//申请试用的参数
                                             break;
                                         }
                                     }
