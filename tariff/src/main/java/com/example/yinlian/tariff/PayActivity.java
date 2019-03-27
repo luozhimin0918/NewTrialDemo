@@ -34,7 +34,7 @@ import android.os.Handler;
 public class PayActivity extends Activity implements View.OnClickListener {
     ImageButton back_imag;
     RecyclerView recycler_view;
-    TextView RemainingDayText,xuMoney,tariffTag;
+    TextView RemainingDayText,xuMoney,tariffTag,probationDay;
     LinearLayout discountLinear,shopButLinear;//试用按钮，立即开通按钮
     private List<TariffRespJson.DataBean.TariffInfoListBean> priceInfoList = new ArrayList<>();
     private int SelectTaoPosition = -1;//默认选择的套餐下标
@@ -102,12 +102,26 @@ public class PayActivity extends Activity implements View.OnClickListener {
 
                             if (orderinfiRespJson != null && orderinfiRespJson.getData() != null) {
                                 String respDetailJson = orderinfiRespJson.getData().getRespDetail();
+//                                respDetailJson=null;//todo
                                 if (respDetailJson == null) {
                                     /**
                                      *没订单
                                      */
                                     RemainingDayText.setText("未开通");
                                     xuMoney.setText("立即开通");//未开通了服务，显示立即开通
+                                    //查出后台默认套餐是否有试用期
+                                    int probationInt=0;
+                                    for(int j=0;j<priceInfoList.size();j++){
+                                        if(priceInfoList.get(j).getIsDefaulted()==1){
+                                            probationInt= priceInfoList.get(j).getProbation();
+                                            break;
+                                        }
+                                    }
+                                    if(probationInt>0){
+                                        discountLinear.setVisibility(View.VISIBLE);//没订单，根据套餐显示试用期了
+                                        probationDay.setText("免费试用"+probationInt+"天");
+                                    }
+
                                 } else {
                                     /**
                                      *有订单
@@ -163,6 +177,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
         tariffTag=findViewById(R.id.tariffTag);
         shopButLinear=findViewById(R.id.shopButLinear);
         shopButLinear.setOnClickListener(this);
+        probationDay=findViewById(R.id.probationDay);
     }
 
     @Override
