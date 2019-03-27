@@ -53,6 +53,22 @@ public class PayActivity extends Activity implements View.OnClickListener {
     }
 
     private void doing() {
+        //测试数据
+        for (int i = 0; i < 5; i++) {
+            TariffRespJson.DataBean.TariffInfoListBean priceInfo = new TariffRespJson.DataBean.TariffInfoListBean();
+            priceInfo.setTariffDesc(">>"+i);
+            priceInfo.setTariffTag("TTTT"+i);
+            if(i%2==1){
+                priceInfo.setProbation(0);
+            }else{
+                priceInfo.setProbation(18);
+            }
+            priceInfo.setOriginalPrice(320+i*10);
+            priceInfo.setPresentPrice(120+i*10);
+            priceInfo.setServiceTerm(3*i);
+//            priceInfoList.add(priceInfo);
+        }
+
         final PriceLanAdapter adapter;
         //价格栏
         //获取RecyclerView的实例
@@ -168,20 +184,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
 
             }
         });
-        for (int i = 0; i < 5; i++) {
-            TariffRespJson.DataBean.TariffInfoListBean priceInfo = new TariffRespJson.DataBean.TariffInfoListBean();
-            priceInfo.setTariffDesc(">>"+i);
-            priceInfo.setTariffTag("TTTT"+i);
-            if(i%2==1){
-                priceInfo.setProbation(0);
-            }else{
-                priceInfo.setProbation(18);
-            }
-            priceInfo.setOriginalPrice(320+i*10);
-            priceInfo.setPresentPrice(120+i*10);
-            priceInfo.setServiceTerm(3*i);
-//            priceInfoList.add(priceInfo);
-        }
+
 
 
     }
