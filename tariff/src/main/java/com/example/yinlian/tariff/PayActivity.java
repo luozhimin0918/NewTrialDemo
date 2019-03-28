@@ -55,6 +55,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
     }
 
     private void doing() {
+       LoadingDialog.showLoadingDialog(this);//显示进度条
         //测试数据
         for (int i = 0; i < 5; i++) {
             TariffRespJson.DataBean.TariffInfoListBean priceInfo = new TariffRespJson.DataBean.TariffInfoListBean();
@@ -169,7 +170,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
                                     discountLinear.setVisibility(View.GONE);//有订单后都没有试用期了
                                 }
                             }
-
+                            LoadingDialog.hideLoadingDialog();//消失进度条
                         }
                     }, new ApiManager.RespErrorCallBack() {
                         @Override
