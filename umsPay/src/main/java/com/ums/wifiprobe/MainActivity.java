@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import com.example.yinlian.tariff.PayActivity;
 import com.example.yinlian.tariff.lisetener.PayStateListenerManager;
 import com.example.yinlian.tariff.lisetener.payListener;
+import com.example.yinlian.tariff.model.IntentParame;
 
 public class MainActivity extends AppCompatActivity implements payListener {
 
@@ -34,7 +35,18 @@ public class MainActivity extends AppCompatActivity implements payListener {
             }
         });
         PayStateListenerManager.getInstance().setConnectionStateListener(this);
-        startActivity(new Intent(this, PayActivity.class));
+        Intent  pamaIntent =new Intent(this, PayActivity.class);
+        IntentParame intentParame =new IntentParame();
+        intentParame.setAppId("");
+        intentParame.setAppKey("");
+        intentParame.setSetMealDesc("\t•\t云端数据无上限存储云端数据无上限存储云端数<br>" +
+                "\t•\t本地订单流水信息实时备份<br>" +
+                "\t•\t商品明细小票打印（基础版只能使用30天）<br>" +
+                "\t•\t30天以外流水实时查询");
+        intentParame.setSetMealName("进销存管家高阶版");
+        intentParame.setAdTextTitle("购买数据打印，对账事半功倍");
+        pamaIntent.putExtra("payIntent",intentParame);
+        startActivity(pamaIntent);
     }
 
     @Override
