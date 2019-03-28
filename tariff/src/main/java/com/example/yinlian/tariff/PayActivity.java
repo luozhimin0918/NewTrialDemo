@@ -44,14 +44,17 @@ public class PayActivity extends Activity implements View.OnClickListener {
     private boolean  ishaveDingdang=false;//是否有开通订单
     private String   ProbatinTariffDesc="";//申请试用的参数套餐详情
     ApiManager apiManager ;
-    String appId = "6694fb55b3b446809aec8002b9a7a0e8";
-    String appKey = "ac6d287a30ef498c89ae2bb7fd27889d";
+    String appId = null;//6694fb55b3b446809aec8002b9a7a0e8
+    String appKey = null;//ac6d287a30ef498c89ae2bb7fd27889d
+    String callPayAppKey=null;
+    Activity  mActivity;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         setContentView(R.layout.pay_mian);
         apiManager= ApiManager.getInstance(this);
+        mActivity=this;
         init();
         getIntentInit();
         doing();
@@ -66,6 +69,9 @@ public class PayActivity extends Activity implements View.OnClickListener {
                     tariffTag.setText(intentParame.getSetMealName());
                     setMealDesc.setText(Html.fromHtml(intentParame.getSetMealDesc()));
                     adTextTitle.setText(intentParame.getAdTextTitle());
+                    appId=intentParame.getAppId();
+                    appKey=intentParame.getAppKey();
+                    callPayAppKey=intentParame.getCallPayAppKey();
                 }catch (NullPointerException e){
 
                 }
@@ -203,6 +209,9 @@ public class PayActivity extends Activity implements View.OnClickListener {
                             LoadingDialog.hideLoadingDialog();//取消加载进度条
                         }
                     });
+                }else{
+                    Toast.makeText(getApplicationContext(),tariffRespJson.getMsg(),Toast.LENGTH_LONG).show();
+                    mActivity.finish();
                 }
 
 
@@ -301,7 +310,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
      * @param goodName 支付订单名称
      */
     private void callPay(int priceNow, String goodName) {
-        new RewardPay().pay(getApplicationContext(),goodName,priceNow+"", new RewardPay.OnPayResultListener() {
+        new RewardPay().pay(getApplicationContext(),callPayAppKey,goodName,priceNow+"", new RewardPay.OnPayResultListener() {
             @Override
             public void onPayResult(int resultCode) {
                 if(resultCode==0){

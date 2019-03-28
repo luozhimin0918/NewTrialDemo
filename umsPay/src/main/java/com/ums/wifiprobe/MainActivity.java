@@ -37,8 +37,8 @@ public class MainActivity extends AppCompatActivity implements payListener {
         PayStateListenerManager.getInstance().setConnectionStateListener(this);
         Intent  pamaIntent =new Intent(this, PayActivity.class);
         IntentParame intentParame =new IntentParame();
-        intentParame.setAppId("");
-        intentParame.setAppKey("");
+        intentParame.setAppId("6694fb55b3b446809aec8002b9a7a0e8");
+        intentParame.setAppKey("ac6d287a30ef498c89ae2bb7fd27889d");
         intentParame.setSetMealDesc("\t•\t云端数据无上限存储云端数据无上限存储云端数<br>" +
                 "\t•\t本地订单流水信息实时备份<br>" +
                 "\t•\t商品明细小票打印（基础版只能使用30天）<br>" +

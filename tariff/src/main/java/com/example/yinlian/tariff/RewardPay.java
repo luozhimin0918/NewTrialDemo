@@ -20,7 +20,7 @@ import java.util.Date;
 public class RewardPay {
     private static final String TAG = "RewardPay";//调用者权限值
 
-    private static final String mAppKey = "076e2adac935401a912a517fe0cc6a7f";//调用者权限值
+    private static  String mAppKey = null;//调用者权限值076e2adac935401a912a517fe0cc6a7f
     private static final String smAppKey="076e2adac935401a912a517fe0cc6a7f";//ac6d287a30ef498c89ae2bb7fd27889d
     private static final String ssmAppKey="f3a737e874bf40bf9a7b116403362537";
     private static String mGoodsName = "客流分析打赏";
@@ -30,8 +30,9 @@ public class RewardPay {
 
 
     //--服务费（分润，第三方应用可用）
-    public void pay(Context context, String goodName, String amount, OnPayResultListener listener) {
+    public void pay(Context context,String callpayAppKey, String goodName, String amount, OnPayResultListener listener) {
         this.listener = listener;
+        this.mAppKey=callpayAppKey;
         mGoodsName = goodName;
         mAmount = amount;
         retryTimes=0;
