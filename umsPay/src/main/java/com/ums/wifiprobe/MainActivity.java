@@ -31,10 +31,13 @@ public class MainActivity extends AppCompatActivity implements payListener {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                startActivity(new Intent(getApplicationContext(), PayActivity.class));
+                toActivity();
             }
         });
         PayStateListenerManager.getInstance().setConnectionStateListener(this);
+        toActivity();
+    }
+    private void toActivity(){
         Intent  pamaIntent =new Intent(this, PayActivity.class);
         IntentParame intentParame =new IntentParame();
         intentParame.setAppId("6694fb55b3b446809aec8002b9a7a0e8");
