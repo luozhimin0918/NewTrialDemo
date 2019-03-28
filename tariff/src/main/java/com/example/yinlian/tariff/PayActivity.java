@@ -19,6 +19,7 @@ import com.example.yinlian.tariff.index.ApiManager;
 import com.example.yinlian.tariff.index.NetWorkUtils;
 import com.example.yinlian.tariff.lisetener.PayStateListenerManager;
 import com.example.yinlian.tariff.model.ForTarilRespJson;
+import com.example.yinlian.tariff.model.IntentParame;
 import com.example.yinlian.tariff.model.OrderinfiRespJson;
 import com.example.yinlian.tariff.model.OrderinfiTime;
 import com.example.yinlian.tariff.model.RecordRespJson;
@@ -36,7 +37,7 @@ import android.os.Handler;
 public class PayActivity extends Activity implements View.OnClickListener {
     ImageButton back_imag;
     RecyclerView recycler_view;
-    TextView RemainingDayText,xuMoney,tariffTag,probationDay;
+    TextView RemainingDayText,xuMoney,tariffTag,probationDay,setMealDesc;
     LinearLayout discountLinear,shopButLinear;//试用按钮，立即开通按钮
     private List<TariffRespJson.DataBean.TariffInfoListBean> priceInfoList = new ArrayList<>();
     private int SelectTaoPosition = -1;//默认选择的套餐下标
@@ -52,7 +53,24 @@ public class PayActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.pay_mian);
         apiManager= ApiManager.getInstance(this);
         init();
+        getIntentInit();
         doing();
+    }
+
+    private void getIntentInit() {
+        if(getIntent()!=null){
+            //app传来的参数
+            IntentParame intentParame   = (IntentParame) getIntent().getSerializableExtra("payIntent");
+            if(intentParame!=null){
+                try{
+                    tariffTag.setText(intentParame.getSetMealName());
+                    setMealDesc.setText(intentParame.getSetMealDesc());
+                }catch (NullPointerException e){
+
+                }
+
+            }
+        }
     }
 
     private void doing() {
@@ -212,6 +230,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
         shopButLinear=findViewById(R.id.shopButLinear);
         shopButLinear.setOnClickListener(this);
         probationDay=findViewById(R.id.probationDay);
+        setMealDesc=findViewById(R.id.setMealDesc);
     }
 
     @Override
