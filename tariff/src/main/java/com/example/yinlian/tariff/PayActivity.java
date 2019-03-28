@@ -228,6 +228,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
             PayStateListenerManager.getInstance().connected();
         }
         if(i==R.id.discountLinear){
+            LoadingDialog.showLoadingDialog(this);//显示进度条
             ReqDetailJson reqDetailJson = new ReqDetailJson();
             reqDetailJson.setTariffDesc(ProbatinTariffDesc);
             apiManager.getForTrial(appId, appKey, reqDetailJson, new ApiManager.RespCallBack() {
@@ -242,6 +243,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
                         }else {
                             Toast.makeText(getApplicationContext(),forTarilRespJson.getMsg(),Toast.LENGTH_LONG).show();
                         }
+                        LoadingDialog.hideLoadingDialog();//消失进度条
                     }catch (Exception e){
 
                     }
@@ -250,6 +252,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
                 @Override
                 public void onError(String errorStr) {
                     KLog.json("ApigetForTrial",errorStr);
+                    LoadingDialog.hideLoadingDialog();//消失进度条
                     Toast.makeText(getApplicationContext(),"试用期申请失败",Toast.LENGTH_LONG).show();
                 }
             });
