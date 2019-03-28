@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.example.yinlian.tariff.index.ApiManager;
+import com.example.yinlian.tariff.index.NetWorkUtils;
 import com.example.yinlian.tariff.lisetener.PayStateListenerManager;
 import com.example.yinlian.tariff.model.ForTarilRespJson;
 import com.example.yinlian.tariff.model.OrderinfiRespJson;
@@ -106,6 +107,11 @@ public class PayActivity extends Activity implements View.OnClickListener {
 
             }
         });
+        if(!NetWorkUtils.isNetworkConnected(this)){
+            Toast.makeText(getApplicationContext(),"请检测网络连接",Toast.LENGTH_LONG).show();
+            LoadingDialog.hideLoadingDialog();//取消加载进度条
+            finish();
+        }
 
         final ReqDetailJson reqDetailJson = new ReqDetailJson();
         reqDetailJson.setTariffDescList("");
@@ -175,7 +181,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
                     }, new ApiManager.RespErrorCallBack() {
                         @Override
                         public void onError(String errorStr) {
-
+                            LoadingDialog.hideLoadingDialog();//取消加载进度条
                         }
                     });
                 }
@@ -186,7 +192,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
             @Override
             public void onError(String errorStr) {
                 KLog.d("getTariffInfo", errorStr);
-
+                LoadingDialog.hideLoadingDialog();//取消加载进度条
             }
         });
 
