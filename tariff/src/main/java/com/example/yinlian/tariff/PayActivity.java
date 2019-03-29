@@ -159,6 +159,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
                     List<TariffRespJson.DataBean.TariffInfoListBean> tariffInfoList= tariffRespJson.getData().getTariffInfoList();
                     priceInfoList.clear();
                     priceInfoList.addAll(tariffInfoList);
+                    SelectTaoPosition=-1;//刷新数据的下标选择初始
                     adapter.notifyDataSetChanged();
 
 
