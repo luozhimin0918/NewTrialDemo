@@ -276,6 +276,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
                     try{
                         ForTarilRespJson forTarilRespJson =JSON.parseObject(jsonRespString,ForTarilRespJson.class);
                         if(forTarilRespJson.getState().equals("0001")){
+                            getSetListOrder();//申请试用成功，刷新界面
                             Toast.makeText(getApplicationContext(),forTarilRespJson.getMsg(),Toast.LENGTH_LONG).show();
                         }else {
                             Toast.makeText(getApplicationContext(),forTarilRespJson.getMsg(),Toast.LENGTH_LONG).show();
