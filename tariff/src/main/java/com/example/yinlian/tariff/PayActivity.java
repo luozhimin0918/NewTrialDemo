@@ -44,6 +44,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
     private boolean  ishaveDingdang=false;//是否有开通订单
     private String   ProbatinTariffDesc="";//申请试用的参数套餐详情
     ApiManager apiManager ;
+    PriceLanAdapter adapter;
     String appId = null;//6694fb55b3b446809aec8002b9a7a0e8
     String appKey = null;//ac6d287a30ef498c89ae2bb7fd27889d
     String callPayAppKey=null;
@@ -98,7 +99,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
 //            priceInfoList.add(priceInfo);
         }
 
-        final PriceLanAdapter adapter;
+
         //价格栏
         //获取RecyclerView的实例
         //创建一个layoutManager，这里使用LinearLayoutManager指定为线性，也就可以有ListView这样的效果
@@ -138,6 +139,14 @@ public class PayActivity extends Activity implements View.OnClickListener {
             finish();
         }
 
+        getSetListOrder();
+
+
+
+
+    }
+
+    private void getSetListOrder() {
         final ReqDetailJson reqDetailJson = new ReqDetailJson();
         reqDetailJson.setTariffDescList("");
         apiManager.getTariffInfo(appId, appKey, reqDetailJson, new ApiManager.RespCallBack() {
@@ -148,6 +157,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
                 if (tariffRespJson.getData() != null && tariffRespJson.getData().getTariffInfoList() != null) {
                     //有套餐的
                     List<TariffRespJson.DataBean.TariffInfoListBean> tariffInfoList= tariffRespJson.getData().getTariffInfoList();
+                    priceInfoList.clear();
                     priceInfoList.addAll(tariffInfoList);
                     adapter.notifyDataSetChanged();
 
@@ -174,7 +184,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
                                     for(int j=0;j<priceInfoList.size();j++){
                                         if(priceInfoList.get(j).getIsDefaulted()==1){
                                             probationInt= priceInfoList.get(j).getProbation();
-                                           ProbatinTariffDesc= priceInfoList.get(j).getTariffDesc();//申请试用的参数
+                                            ProbatinTariffDesc= priceInfoList.get(j).getTariffDesc();//申请试用的参数
                                             break;
                                         }
                                     }
@@ -194,7 +204,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
                                         RemainingDayText.setText("已过期");
                                     } else {
                                         //还剩多少天
-                                      String   upString = "还剩<font color='#FB493F'><bold>" + RemainingDays + "</bold></font>天";
+                                        String   upString = "还剩<font color='#FB493F'><bold>" + RemainingDays + "</bold></font>天";
                                         RemainingDayText.setText(Html.fromHtml(upString));
                                     }
                                     xuMoney.setText("立即续费");//开通了服务，显示立即续费
@@ -223,9 +233,6 @@ public class PayActivity extends Activity implements View.OnClickListener {
                 LoadingDialog.hideLoadingDialog();//取消加载进度条
             }
         });
-
-
-
     }
 
     private void init() {
@@ -327,6 +334,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
                             KLog.json("ApiRecordPay",jsonRespString);
                             RecordRespJson recordRespJson =JSON.parseObject(jsonRespString,RecordRespJson.class);
                             if(recordRespJson.getState().equals("0001")){
+                               getSetListOrder();//刷新剩余天数等的数据
                               //  finish();
                                                 /*  GlobalValueManager.getInstance().setPayTaoProbeValue(false);//购买套餐成功，允许开探针
                                                   Intent intent = new Intent(mContext, ProbeService.class);
