@@ -236,6 +236,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
                         @Override
                         public void onError(String errorStr) {
                             LoadingDialog.hideLoadingDialog();//取消加载进度条
+                            KLog.json("getOrderInfo", errorStr);
                         }
                     });
                 }else{
