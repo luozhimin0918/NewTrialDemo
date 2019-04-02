@@ -83,21 +83,6 @@ public class PayActivity extends Activity implements View.OnClickListener {
 
     private void doing() {
        LoadingDialog.showLoadingDialog(this);//显示进度条
-        //测试数据
-        for (int i = 0; i < 5; i++) {
-            TariffRespJson.DataBean.TariffInfoListBean priceInfo = new TariffRespJson.DataBean.TariffInfoListBean();
-            priceInfo.setTariffDesc(">>"+i);
-            priceInfo.setTariffTag("TTTT"+i);
-            if(i%2==1){
-                priceInfo.setProbation(0);
-            }else{
-                priceInfo.setProbation(18);
-            }
-            priceInfo.setOriginalPrice(320+i*10);
-            priceInfo.setPresentPrice(120+i*10);
-            priceInfo.setServiceTerm(3*i);
-//            priceInfoList.add(priceInfo);
-        }
 
 
         //价格栏
@@ -159,6 +144,21 @@ public class PayActivity extends Activity implements View.OnClickListener {
                     List<TariffRespJson.DataBean.TariffInfoListBean> tariffInfoList= tariffRespJson.getData().getTariffInfoList();
                     priceInfoList.clear();
                     priceInfoList.addAll(tariffInfoList);
+                    //测试数据
+                    for (int i = 0; i < 3; i++) {
+                        TariffRespJson.DataBean.TariffInfoListBean priceInfo = new TariffRespJson.DataBean.TariffInfoListBean();
+                        priceInfo.setTariffDesc(">>"+i);
+                        priceInfo.setTariffTag("TTTT"+i);
+                        if(i%2==1){
+                            priceInfo.setProbation(0);
+                        }else{
+                            priceInfo.setProbation(18);
+                        }
+                        priceInfo.setOriginalPrice(320+i*10);
+                        priceInfo.setPresentPrice(120+i*10);
+                        priceInfo.setServiceTerm(3*i);
+//                        priceInfoList.add(priceInfo);
+                    }
                     SelectTaoPosition=-1;//刷新数据的下标选择初始
                     adapter.notifyDataSetChanged();
 
