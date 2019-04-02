@@ -306,9 +306,11 @@ public class PayActivity extends Activity implements View.OnClickListener {
                     }
             }
             KLog.d(""+SelectTaoPosition);
-            int priceNow = (int) (priceInfoList.get(SelectTaoPosition).getPresentPrice()*100);//现价
-            String goodName =priceInfoList.get(SelectTaoPosition).getTariffDesc();//商品描述
-            callPay(priceNow,goodName);
+            if(priceInfoList!=null&&priceInfoList.size()>0&&SelectTaoPosition!=-1){
+                int priceNow = (int) (priceInfoList.get(SelectTaoPosition).getPresentPrice()*100);//现价
+                String goodName =priceInfoList.get(SelectTaoPosition).getTariffDesc();//商品描述
+                callPay(priceNow,goodName);
+            }
         }
 
     }
