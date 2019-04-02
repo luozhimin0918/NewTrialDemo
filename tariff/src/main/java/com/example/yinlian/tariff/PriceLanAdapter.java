@@ -18,6 +18,8 @@ import com.example.yinlian.tariff.model.TariffRespJson;
 public class PriceLanAdapter extends RecyclerView.Adapter<PriceLanAdapter.ViewHolder> {
 
     private List<TariffRespJson.DataBean.TariffInfoListBean> mIconList;
+    private boolean isCanOnClick=true;//是否可以点击选项
+
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
 
@@ -27,6 +29,10 @@ public class PriceLanAdapter extends RecyclerView.Adapter<PriceLanAdapter.ViewHo
 
     public void setmOnItemClickListener(OnItemClickListener listener) {
         this.mOnItemClickListener = listener;
+    }
+
+    public void setCanOnClick(boolean isCanOnClick){
+        this.isCanOnClick=isCanOnClick;
     }
 
 
@@ -64,21 +70,31 @@ public class PriceLanAdapter extends RecyclerView.Adapter<PriceLanAdapter.ViewHo
             holder.caozhiImage.setVisibility(View.VISIBLE);
             holder.bgStyle.setBackgroundResource(R.drawable.bg_jianbian_select);
         }else{
+            if(isCanOnClick){
+                holder.bgStyle.setBackgroundResource(R.drawable.bg_center_white);
+            }else{
+                holder.bgStyle.setBackgroundResource(R.drawable.bg_center_gray);
+            }
             holder.caozhiImage.setVisibility(View.GONE);
-            holder.bgStyle.setBackgroundResource(R.drawable.bg_center_white);
+
         }
         holder.tariffDesc.setText("开通"+icon.getServiceTerm()+"个月");
         holder.presentPrice.setText("¥"+icon.getPresentPrice());
         holder.originalPrice.setText("¥"+icon.getOriginalPrice());
         double distan =icon.getOriginalPrice()-icon.getPresentPrice();
         holder.discount.setText("立省"+new DecimalFormat("#.##").format(distan)+"元");
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                notifiUi(position);
-                mOnItemClickListener.onItemClick(holder.itemView,position);
-            }
-        });
+        if(isCanOnClick){//可以点击添加点击事件
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    notifiUi(position);
+                    mOnItemClickListener.onItemClick(holder.itemView,position);
+                }
+            });
+        }else{
+            holder.itemView.setOnClickListener(null);
+        }
+
 
     }
 

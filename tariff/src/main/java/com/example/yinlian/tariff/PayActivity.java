@@ -160,6 +160,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
 //                        priceInfoList.add(priceInfo);
                     }
                     SelectTaoPosition=-1;//刷新数据的下标选择初始
+                    adapter.setCanOnClick(true);//初始化可以点击
                     adapter.notifyDataSetChanged();
 
 
@@ -207,6 +208,18 @@ public class PayActivity extends Activity implements View.OnClickListener {
                                         //还剩多少天
                                         String   upString = "还剩<font color='#FB493F'><bold>" + RemainingDays + "</bold></font>天";
                                         RemainingDayText.setText(Html.fromHtml(upString));
+                                       String  selectTariDesc = orderinfiTimeList.get(0).getTariffDesc();
+                                       if(selectTariDesc!=null){
+                                           for(int d=0;d<priceInfoList.size();d++){
+                                               if(priceInfoList.get(d).getTariffDesc().equals(selectTariDesc)){
+                                                   priceInfoList.get(d).setIsDefaulted(1);
+                                               }else{
+                                                   priceInfoList.get(d).setIsDefaulted(0);
+                                               }
+                                           }
+                                           adapter.setCanOnClick(false);//不可以点击选项了
+                                           adapter.notifyDataSetChanged();
+                                       }
                                     }
                                     xuMoney.setText("立即续费");//开通了服务，显示立即续费
                                     discountLinear.setVisibility(View.GONE);//有订单后都没有试用期了
