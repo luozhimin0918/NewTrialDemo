@@ -37,7 +37,7 @@ import android.os.Handler;
 public class PayActivity extends Activity implements View.OnClickListener {
     ImageButton back_imag;
     RecyclerView recycler_view;
-    TextView RemainingDayText,xuMoney,tariffTag,probationDay,setMealDesc,adTextTitle;
+    TextView RemainingDayText,xuMoney,tariffTag,probationDay,setMealDesc,adTextTitle,recyText;
     LinearLayout discountLinear,shopButLinear;//试用按钮，立即开通按钮
     private List<TariffRespJson.DataBean.TariffInfoListBean> priceInfoList = new ArrayList<>();
     private int SelectTaoPosition = -1;//默认选择的套餐下标
@@ -231,6 +231,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
             @Override
             public void onError(String errorStr) {
                 KLog.d("getTariffInfo", errorStr);
+                recyText.setVisibility(View.VISIBLE);//获取不到套餐，显示此设备未配置套餐
                 LoadingDialog.hideLoadingDialog();//取消加载进度条
             }
         });
@@ -250,6 +251,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
         probationDay=findViewById(R.id.probationDay);
         setMealDesc=findViewById(R.id.setMealDesc);
         adTextTitle=findViewById(R.id.adTextTitle);
+        recyText=findViewById(R.id.recyText);
     }
 
     @Override
