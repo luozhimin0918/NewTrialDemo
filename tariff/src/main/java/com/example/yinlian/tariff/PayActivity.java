@@ -105,20 +105,16 @@ public class PayActivity extends Activity implements View.OnClickListener {
                 SelectTaoPosition=position;
                 int probationIntSelect  =priceInfoList.get(SelectTaoPosition).getProbation();
                 if(!ishaveDingdang&&probationIntSelect>0){
-                    shiyong.setVisibility(View.GONE);
-                    xuMoney.setVisibility(View.VISIBLE);
-                    isFreeUseOrShop=true;
-                    discountLinear.setBackgroundResource(R.drawable.bg_center_white);
                     discountLinear.setVisibility(View.VISIBLE);
                     probationDay.setText("免费试用"+probationIntSelect+"天");
                     ProbatinTariffDesc= priceInfoList.get(SelectTaoPosition).getTariffDesc();//申请试用的参数
                 }else{
-                    shiyong.setVisibility(View.GONE);
-                    xuMoney.setVisibility(View.VISIBLE);
-                    isFreeUseOrShop=true;
-                    discountLinear.setBackgroundResource(R.drawable.bg_center_white);
                     discountLinear.setVisibility(View.GONE);
                 }
+                shiyong.setVisibility(View.GONE);
+                xuMoney.setVisibility(View.VISIBLE);
+                isFreeUseOrShop=true;
+                discountLinear.setBackgroundResource(R.drawable.bg_center_white);
 
             }
 
