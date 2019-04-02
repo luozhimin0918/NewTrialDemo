@@ -139,7 +139,7 @@
             android:padding="10dp"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:background="@drawable/selector_protation_btn_bg"
+            android:background="@drawable/bg_center_white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
@@ -180,6 +180,16 @@
             <TextView
                 android:id="@+id/xuMoney"
                 android:text="立即开通"
+                android:textSize="30px"
+                android:textColor="#EFD0A0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                />
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/shiyong"
+                android:text="立即试用"
                 android:textSize="30px"
                 android:textColor="#EFD0A0"
                 android:layout_width="wrap_content"

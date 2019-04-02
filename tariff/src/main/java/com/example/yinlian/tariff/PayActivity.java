@@ -37,7 +37,7 @@ import android.os.Handler;
 public class PayActivity extends Activity implements View.OnClickListener {
     ImageButton back_imag;
     RecyclerView recycler_view;
-    TextView RemainingDayText,xuMoney,tariffTag,probationDay,setMealDesc,adTextTitle,recyText;
+    TextView RemainingDayText,xuMoney,shiyong,tariffTag,probationDay,setMealDesc,adTextTitle,recyText;
     LinearLayout discountLinear,shopButLinear;//试用按钮，立即开通按钮
     private List<TariffRespJson.DataBean.TariffInfoListBean> priceInfoList = new ArrayList<>();
     private int SelectTaoPosition = -1;//默认选择的套餐下标
@@ -49,6 +49,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
     String appKey = null;//ac6d287a30ef498c89ae2bb7fd27889d
     String callPayAppKey=null;
     Activity  mActivity;
+    private boolean isFreeUseOrShop =true;//true表示购买，false表示试用
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -256,6 +257,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
         recycler_view = findViewById(R.id.recycler_view);
         RemainingDayText=findViewById(R.id.RemainingDayText);
         xuMoney=findViewById(R.id.xuMoney);
+        shiyong=findViewById(R.id.shiyong);
         discountLinear=findViewById(R.id.discountLinear);
         discountLinear.setOnClickListener(this);
         tariffTag=findViewById(R.id.tariffTag);
@@ -281,35 +283,17 @@ public class PayActivity extends Activity implements View.OnClickListener {
             PayStateListenerManager.getInstance().connected();
         }
         if(i==R.id.discountLinear){
-            LoadingDialog.showLoadingDialog(this);//显示进度条
-            ReqDetailJson reqDetailJson = new ReqDetailJson();
-            reqDetailJson.setTariffDesc(ProbatinTariffDesc);
-            apiManager.getForTrial(appId, appKey, reqDetailJson, new ApiManager.RespCallBack() {
-                @Override
-                public void onResponse(String jsonRespString) {
-                    KLog.json("ApigetForTrial",jsonRespString);
-
-                    try{
-                        ForTarilRespJson forTarilRespJson =JSON.parseObject(jsonRespString,ForTarilRespJson.class);
-                        if(forTarilRespJson.getState().equals("0001")){
-                            getSetListOrder();//申请试用成功，刷新界面
-                            Toast.makeText(getApplicationContext(),forTarilRespJson.getMsg(),Toast.LENGTH_LONG).show();
-                        }else {
-                            Toast.makeText(getApplicationContext(),forTarilRespJson.getMsg(),Toast.LENGTH_LONG).show();
-                        }
-                        LoadingDialog.hideLoadingDialog();//消失进度条
-                    }catch (Exception e){
-
-                    }
-                }
-            }, new ApiManager.RespErrorCallBack() {
-                @Override
-                public void onError(String errorStr) {
-                    KLog.json("ApigetForTrial",errorStr);
-                    LoadingDialog.hideLoadingDialog();//消失进度条
-                    Toast.makeText(getApplicationContext(),"试用期申请失败",Toast.LENGTH_LONG).show();
-                }
-            });
+            if(isFreeUseOrShop){
+                isFreeUseOrShop=false;
+                discountLinear.setBackgroundResource(R.drawable.bg_jianbian_select);
+                shiyong.setVisibility(View.VISIBLE);
+                xuMoney.setVisibility(View.GONE);
+            }else{
+                isFreeUseOrShop=true;
+                discountLinear.setBackgroundResource(R.drawable.bg_center_white);
+                xuMoney.setVisibility(View.VISIBLE);
+                shiyong.setVisibility(View.GONE);
+            }
         }
         if(i==R.id.shopButLinear){
             if(SelectTaoPosition==-1){//如果没有选中套餐列表，找到默认套餐
@@ -322,9 +306,43 @@ public class PayActivity extends Activity implements View.OnClickListener {
             }
             KLog.d(""+SelectTaoPosition);
             if(priceInfoList!=null&&priceInfoList.size()>0&&SelectTaoPosition!=-1){
-                int priceNow = (int) (priceInfoList.get(SelectTaoPosition).getPresentPrice()*100);//现价
-                String goodName =priceInfoList.get(SelectTaoPosition).getTariffDesc();//商品描述
-                callPay(priceNow,goodName);
+
+                if(isFreeUseOrShop){//购买
+                    int priceNow = (int) (priceInfoList.get(SelectTaoPosition).getPresentPrice()*100);//现价
+                    String goodName =priceInfoList.get(SelectTaoPosition).getTariffDesc();//商品描述
+                    callPay(priceNow,goodName);
+                }else {//试用
+                    LoadingDialog.showLoadingDialog(this);//显示进度条
+                    ReqDetailJson reqDetailJson = new ReqDetailJson();
+                    reqDetailJson.setTariffDesc(ProbatinTariffDesc);
+                    apiManager.getForTrial(appId, appKey, reqDetailJson, new ApiManager.RespCallBack() {
+                        @Override
+                        public void onResponse(String jsonRespString) {
+                            KLog.json("ApigetForTrial",jsonRespString);
+
+                            try{
+                                ForTarilRespJson forTarilRespJson =JSON.parseObject(jsonRespString,ForTarilRespJson.class);
+                                if(forTarilRespJson.getState().equals("0001")){
+                                    getSetListOrder();//申请试用成功，刷新界面
+                                    Toast.makeText(getApplicationContext(),forTarilRespJson.getMsg(),Toast.LENGTH_LONG).show();
+                                }else {
+                                    Toast.makeText(getApplicationContext(),forTarilRespJson.getMsg(),Toast.LENGTH_LONG).show();
+                                }
+                                LoadingDialog.hideLoadingDialog();//消失进度条
+                            }catch (Exception e){
+
+                            }
+                        }
+                    }, new ApiManager.RespErrorCallBack() {
+                        @Override
+                        public void onError(String errorStr) {
+                            KLog.json("ApigetForTrial",errorStr);
+                            LoadingDialog.hideLoadingDialog();//消失进度条
+                            Toast.makeText(getApplicationContext(),"试用期申请失败",Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+
             }
         }
 
