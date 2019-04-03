@@ -333,6 +333,11 @@ public class PayActivity extends Activity implements View.OnClickListener {
                             try{
                                 ForTarilRespJson forTarilRespJson =JSON.parseObject(jsonRespString,ForTarilRespJson.class);
                                 if(forTarilRespJson.getState().equals("0001")){
+                                    //成功申请试用，状态初始化
+                                    isFreeUseOrShop=true;
+                                    discountLinear.setBackgroundResource(R.drawable.bg_center_white);
+                                    xuMoney.setVisibility(View.VISIBLE);
+                                    shiyong.setVisibility(View.GONE);
                                     getSetListOrder();//申请试用成功，刷新界面
                                     Toast.makeText(getApplicationContext(),forTarilRespJson.getMsg(),Toast.LENGTH_LONG).show();
                                 }else {
