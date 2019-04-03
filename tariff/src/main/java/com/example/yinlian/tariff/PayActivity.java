@@ -179,28 +179,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
                             if (orderinfiRespJson != null && orderinfiRespJson.getData() != null) {
                                 String respDetailJson = orderinfiRespJson.getData().getRespDetail();
 //                                respDetailJson=null;//todo
-                                if (respDetailJson == null) {
-                                    /**
-                                     *没订单
-                                     */
-                                    ishaveDingdang=false;//没有订单
-                                    RemainingDayText.setText("未开通");
-                                    xuMoney.setText("立即开通");//未开通了服务，显示立即开通
-                                    //查出后台默认套餐是否有试用期
-                                    int probationInt=0;
-                                    for(int j=0;j<priceInfoList.size();j++){
-                                        if(priceInfoList.get(j).getIsDefaulted()==1){
-                                            probationInt= priceInfoList.get(j).getProbation();
-                                            ProbatinTariffDesc= priceInfoList.get(j).getTariffDesc();//申请试用的参数
-                                            break;
-                                        }
-                                    }
-                                    if(probationInt>0){
-                                        discountLinear.setVisibility(View.VISIBLE);//没订单，根据套餐显示试用期了
-                                        probationDay.setText("免费试用"+probationInt+"天");
-                                    }
-
-                                } else {
+                                if (respDetailJson != null) {
                                     /**
                                      *有订单
                                      */
@@ -213,21 +192,42 @@ public class PayActivity extends Activity implements View.OnClickListener {
                                         //还剩多少天
                                         String   upString = "还剩<font color='#FB493F'><bold>" + RemainingDays + "</bold></font>天";
                                         RemainingDayText.setText(Html.fromHtml(upString));
-                                       String  selectTariDesc = orderinfiTimeList.get(0).getTariffDesc();
-                                       if(selectTariDesc!=null){
-                                           for(int d=0;d<priceInfoList.size();d++){
-                                               if(priceInfoList.get(d).getTariffDesc().equals(selectTariDesc)){
-                                                   priceInfoList.get(d).setIsDefaulted(1);
-                                               }else{
-                                                   priceInfoList.get(d).setIsDefaulted(0);
-                                               }
-                                           }
-                                           adapter.setCanOnClick(false);//不可以点击选项了
-                                           adapter.notifyDataSetChanged();
-                                       }
+                                        String  selectTariDesc = orderinfiTimeList.get(0).getTariffDesc();
+                                        if(selectTariDesc!=null){
+                                            for(int d=0;d<priceInfoList.size();d++){
+                                                if(priceInfoList.get(d).getTariffDesc().equals(selectTariDesc)){
+                                                    priceInfoList.get(d).setIsDefaulted(1);
+                                                }else{
+                                                    priceInfoList.get(d).setIsDefaulted(0);
+                                                }
+                                            }
+                                            adapter.setCanOnClick(false);//不可以点击选项了
+                                            adapter.notifyDataSetChanged();
+                                        }
                                     }
                                     xuMoney.setText("立即续费");//开通了服务，显示立即续费
                                     discountLinear.setVisibility(View.GONE);//有订单后都没有试用期了
+
+                                }
+                            }else{
+                                /**
+                                 *没订单
+                                 */
+                                ishaveDingdang=false;//没有订单
+                                RemainingDayText.setText("未开通");
+                                xuMoney.setText("立即开通");//未开通了服务，显示立即开通
+                                //查出后台默认套餐是否有试用期
+                                int probationInt=0;
+                                for(int j=0;j<priceInfoList.size();j++){
+                                    if(priceInfoList.get(j).getIsDefaulted()==1){
+                                        probationInt= priceInfoList.get(j).getProbation();
+                                        ProbatinTariffDesc= priceInfoList.get(j).getTariffDesc();//申请试用的参数
+                                        break;
+                                    }
+                                }
+                                if(probationInt>0){
+                                    discountLinear.setVisibility(View.VISIBLE);//没订单，根据套餐显示试用期了
+                                    probationDay.setText("免费试用"+probationInt+"天");
                                 }
                             }
                             LoadingDialog.hideLoadingDialog();//消失进度条
