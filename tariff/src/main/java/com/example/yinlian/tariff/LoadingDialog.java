@@ -24,9 +24,13 @@ import android.widget.RelativeLayout;
 public class LoadingDialog {
     private static Dialog loadingDialong;
     public static void showLoadingDialog(Context context){
-        hideLoadingDialog();
-        loadingDialong = createLoadingDialog(context);
-        loadingDialong.show();
+        if(loadingDialong!=null&&loadingDialong.isShowing()){
+
+        }else{
+            hideLoadingDialog();
+            loadingDialong = createLoadingDialog(context);
+            loadingDialong.show();
+        }
     }
     public static void hideLoadingDialog(){
         if(loadingDialong!=null){

@@ -316,6 +316,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
                     int priceNow = (int) (priceInfoList.get(SelectTaoPosition).getPresentPrice()*100);//现价
                     String goodName =priceInfoList.get(SelectTaoPosition).getTariffDesc();//商品描述
                     if(priceNow==0){
+                        LoadingDialog.showLoadingDialog(this);//显示进度条
                         ZeroCallNotPay();
                     }else{
                         callPay(priceNow,goodName);
@@ -383,11 +384,14 @@ public class PayActivity extends Activity implements View.OnClickListener {
                                                   intent.putExtra("openOrCloseProbe", "open");
                                                   startService(intent);*/
                 }
+                LoadingDialog.hideLoadingDialog();//消失进度条
             }
         }, new ApiManager.RespErrorCallBack() {
             @Override
             public void onError(String errorStr) {
                 KLog.d("ApiRecordPay",errorStr);
+                Toast.makeText(getApplicationContext(),"购买失败",Toast.LENGTH_LONG).show();
+                LoadingDialog.hideLoadingDialog();//消失进度条
             }
         });
     }
