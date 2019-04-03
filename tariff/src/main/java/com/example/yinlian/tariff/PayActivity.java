@@ -315,7 +315,12 @@ public class PayActivity extends Activity implements View.OnClickListener {
                 if(isFreeUseOrShop){//购买
                     int priceNow = (int) (priceInfoList.get(SelectTaoPosition).getPresentPrice()*100);//现价
                     String goodName =priceInfoList.get(SelectTaoPosition).getTariffDesc();//商品描述
-                    callPay(priceNow,goodName);
+                    if(priceNow==0){
+                        ZeroCallNotPay();
+                    }else{
+                        callPay(priceNow,goodName);
+                    }
+
                 }else {//试用
                     LoadingDialog.showLoadingDialog(this);//显示进度条
                     ReqDetailJson reqDetailJson = new ReqDetailJson();
@@ -353,6 +358,34 @@ public class PayActivity extends Activity implements View.OnClickListener {
 
     }
 
+    private void ZeroCallNotPay(){
+        ReqDetailJson reqDetailJson = new ReqDetailJson();
+        TariffRespJson.DataBean.TariffInfoListBean modelTari = priceInfoList.get(SelectTaoPosition);
+        reqDetailJson.setTariffDesc(modelTari.getTariffDesc());//套餐描述
+        reqDetailJson.setPaymentPrice(modelTari.getPresentPrice()+"");//现价
+        reqDetailJson.setPaymentTerm(modelTari.getServiceTerm()+"");//服务期
+        reqDetailJson.setPurchaseQuantity("1");
+        apiManager.getRecordPaymentInfo(appId, appKey, reqDetailJson, new ApiManager.RespCallBack() {
+            @Override
+            public void onResponse(String jsonRespString) {
+                KLog.json("ApiRecordPay",jsonRespString);
+                RecordRespJson recordRespJson =JSON.parseObject(jsonRespString,RecordRespJson.class);
+                if(recordRespJson.getState().equals("0001")){
+                    getSetListOrder();//刷新剩余天数等的数据
+                    //  finish();
+                                                /*  GlobalValueManager.getInstance().setPayTaoProbeValue(false);//购买套餐成功，允许开探针
+                                                  Intent intent = new Intent(mContext, ProbeService.class);
+                                                  intent.putExtra("openOrCloseProbe", "open");
+                                                  startService(intent);*/
+                }
+            }
+        }, new ApiManager.RespErrorCallBack() {
+            @Override
+            public void onError(String errorStr) {
+                KLog.d("ApiRecordPay",errorStr);
+            }
+        });
+    }
     /**
      * callPay支付
      * @param priceNow 支付金额
