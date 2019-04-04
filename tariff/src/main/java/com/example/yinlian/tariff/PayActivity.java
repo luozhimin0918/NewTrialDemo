@@ -38,7 +38,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
     ImageButton back_imag;
     RecyclerView recycler_view;
     TextView RemainingDayText,xuMoney,shiyong,tariffTag,probationDay,setMealDesc,adTextTitle,recyText;
-    LinearLayout discountLinear,shopButLinear;//试用按钮，立即开通按钮
+    LinearLayout discountLinear,shopButLinear,back_imag_linear;//试用按钮，立即开通按钮,返回键
     private List<TariffRespJson.DataBean.TariffInfoListBean> priceInfoList = new ArrayList<>();
     private int SelectTaoPosition = -1;//默认选择的套餐下标
     private boolean  ishaveDingdang=false;//是否有开通订单
@@ -268,6 +268,8 @@ public class PayActivity extends Activity implements View.OnClickListener {
         tariffTag=findViewById(R.id.tariffTag);
         shopButLinear=findViewById(R.id.shopButLinear);
         shopButLinear.setOnClickListener(this);
+        back_imag_linear=findViewById(R.id.back_imag_linear);
+        back_imag_linear.setOnClickListener(this);
         probationDay=findViewById(R.id.probationDay);
         setMealDesc=findViewById(R.id.setMealDesc);
         adTextTitle=findViewById(R.id.adTextTitle);
@@ -283,7 +285,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.back_imag) {
+        if (i == R.id.back_imag||i==R.id.back_imag_linear) {
             finish();
             PayStateListenerManager.getInstance().connected();
         }
