@@ -70,12 +70,12 @@ public class PayActivity extends Activity implements View.OnClickListener {
             IntentParame intentParame   = (IntentParame) getIntent().getSerializableExtra("payIntent");
             if(intentParame!=null){
                 try{
-                    tariffTag.setText(intentParame.getSetMealName());
-                    setMealDesc.setText(Html.fromHtml(intentParame.getSetMealDesc()));
-                    adTextTitle.setText(intentParame.getAdTextTitle());
                     appId=intentParame.getAppId();
                     appKey=intentParame.getAppKey();
                     callPayAppKey=intentParame.getAppKey();
+                    tariffTag.setText(intentParame.getSetMealName());
+                    adTextTitle.setText(intentParame.getAdTextTitle());
+                    setMealDesc.setText(Html.fromHtml(intentParame.getSetMealDesc()));
                 }catch (NullPointerException e){
 
                 }
