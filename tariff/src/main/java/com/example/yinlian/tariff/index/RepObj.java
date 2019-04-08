@@ -1,6 +1,7 @@
 package com.example.yinlian.tariff.index;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.example.yinlian.tariff.model.AppInfoJSon;
@@ -166,7 +167,10 @@ public class RepObj {
 //            String allStr =  com.alibaba.fastjson.JSONObject.toJSONString(jsonObject, SerializerFeature.PrettyFormat);
             String allStr= jsonObject.toString();
             KLog.d("REp",allStr);
-            String textTwo =AesUtil.encrypt(allStr,appKey.substring(0,16));
+            String textTwo="";
+            if(!TextUtils.isEmpty(appKey)){
+                 textTwo =AesUtil.encrypt(allStr,appKey.substring(0,16));
+            }
             jsonObject.put("mac",textTwo);
 
 
