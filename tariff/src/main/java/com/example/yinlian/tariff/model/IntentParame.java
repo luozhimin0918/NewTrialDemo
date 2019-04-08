@@ -11,15 +11,7 @@ public class IntentParame implements Serializable {
     private String adTextTitle;//促销广告标题
     private String appId;//计费接口的appId
     private String appKey;//计费接口的appKey
-    private String callPayAppKey;//callPay的appKey
 
-    public String getCallPayAppKey() {
-        return callPayAppKey;
-    }
-
-    public void setCallPayAppKey(String callPayAppKey) {
-        this.callPayAppKey = callPayAppKey;
-    }
 
     public String getAdTextTitle() {
         return adTextTitle;

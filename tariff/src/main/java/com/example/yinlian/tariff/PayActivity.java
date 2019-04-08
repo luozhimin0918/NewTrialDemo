@@ -75,7 +75,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
                     adTextTitle.setText(intentParame.getAdTextTitle());
                     appId=intentParame.getAppId();
                     appKey=intentParame.getAppKey();
-                    callPayAppKey=intentParame.getCallPayAppKey();
+                    callPayAppKey=intentParame.getAppKey();
                 }catch (NullPointerException e){
 
                 }
