@@ -50,6 +50,8 @@ public class PayActivity extends Activity implements View.OnClickListener {
     String callPayAppKey=null;
     Activity  mActivity;
     private boolean isFreeUseOrShop =true;//true表示购买，false表示试用
+    private String  TariffDescStr="";//购买成功的套餐名
+    private int RemainingDaysStr;//购买成功的套餐下剩余天数
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -186,6 +188,8 @@ public class PayActivity extends Activity implements View.OnClickListener {
                                     ishaveDingdang=true;//有订单
                                     List<OrderinfiTime> orderinfiTimeList = JSON.parseArray(respDetailJson, OrderinfiTime.class);
                                     int RemainingDays = orderinfiTimeList.get(0).getRemainingDays();
+                                    RemainingDaysStr=RemainingDays;//回调剩余天数赋值
+                                    TariffDescStr=orderinfiTimeList.get(0).getTariffDesc();//回调购买的套餐描述
                                     if (RemainingDays == 0) {//套餐过期后，提示框出现
                                         RemainingDayText.setText("已过期");
                                     } else {
@@ -279,7 +283,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        PayStateListenerManager.getInstance().connected();
+        PayStateListenerManager.getInstance().onComBuyState(ishaveDingdang,RemainingDaysStr,TariffDescStr);
     }
 
     @Override
@@ -287,7 +291,7 @@ public class PayActivity extends Activity implements View.OnClickListener {
         int i = v.getId();
         if (i == R.id.back_imag||i==R.id.back_imag_linear) {
             finish();
-            PayStateListenerManager.getInstance().connected();
+            PayStateListenerManager.getInstance().onComBuyState(ishaveDingdang,RemainingDaysStr,TariffDescStr);
         }
         if(i==R.id.discountLinear){
             if(isFreeUseOrShop){

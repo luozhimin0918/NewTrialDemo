@@ -19,22 +19,11 @@ public class PayStateListenerManager {
         this.mListener = mListener;
     }
 
-    public void connected() {
+    public void onComBuyState(boolean isbuy,int days,String tariffDesc) {
         if (mListener != null) {
-            mListener.onConnected();
+            mListener.onComBuyState( isbuy, days, tariffDesc);
         }
     }
 
-    public void connecting(){
-        if (mListener!=null){
-            mListener.onConnecting();
-        }
-    }
-
-    public void disconnected(){
-        if (mListener != null){
-            mListener.onDisConnected();
-        }
-    }
 
 }

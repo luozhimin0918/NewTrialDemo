@@ -153,19 +153,7 @@ public class MainActivity extends AppCompatActivity implements payListener {
     }
 
     @Override
-    public void onConnecting() {
-         KLog.d("Connnnn","onConnecting");
-    }
-
-    @Override
-    public void onConnected() {
-        KLog.d("Connnnn","onConnected");
-
-    }
-
-    @Override
-    public void onDisConnected() {
-        KLog.d("Connnnn","onDisConnected");
+    public void onComBuyState(boolean isbuy, int days, String tariffDesc) {
 
     }
 }

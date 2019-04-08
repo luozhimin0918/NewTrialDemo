@@ -75,19 +75,8 @@ public class MainActivity extends AppCompatActivity implements payListener {
         return super.onOptionsItemSelected(item);
     }
     @Override
-    public void onConnecting() {
-        Log.d("Connnnn","onConnecting");
-    }
-
-    @Override
-    public void onConnected() {
-        Log.d("Connnnn","onConnected");
-
-    }
-
-    @Override
-    public void onDisConnected() {
-        Log.d("Connnnn","onDisConnected");
+    public void onComBuyState(boolean isbuy, int days, String tariffDesc) {
+        Log.d("onComBuyState","isbuy："+isbuy+"    剩余天数："+days+"     套餐描述："+tariffDesc);
 
     }
 }
